@@ -41,15 +41,24 @@ public class MessageDao {
             String tag = cursor.getString(cursor.getColumnIndex(MessageData.TABLE_COLUMN_IMAGE_TAG));
             String markPointString = cursor.getString(cursor.getColumnIndex(MessageData.TABLE_COLUMN_MARK_POINT));
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            Date markPoint;
+
+
+            messageData.setId(id);
+            messageData.setContent(content);
+            messageData.setImageIds(imageIds);
+            messageData.setTag(tag);
+
             try {
+                Date markPoint;
                 markPoint = format.parse(markPointString);
+                messageData.setMarkPoint(markPoint);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            String updateTime = cursor.getString(cursor.getColumnIndex(MessageData.TABLE_COLUMN_UPDATE_TIME));
+            String updateTimeString = cursor.getString(cursor.getColumnIndex(MessageData.TABLE_COLUMN_UPDATE_TIME));
             try {
-                Date date=format.parse(updateTime);
+                Date updateTime = format.parse(updateTimeString);
+                messageData.setUpdateTime(updateTime);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
