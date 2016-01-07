@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<project name="baby-gallery-webside" default="build" basedir=".">
+    <property name="app-name" value="BabyGallery"/>
+    <property name="src" value="src"/>
+    <property name="build" value="build"/>
+    <property name="build.class" value="build\WEB-INF\classes"/>
+    <property name="dest" value="dest"/>
+    <property name="jboss-dir" value="\Users\Mariaaron\devkit\jboss-eap-6.3\standalone\deployments\BabyGallery.ear"/>
+    <property name="3rd.lib" value="\Users\Mariaaron\kuaiPan\快盘\tools\java\basicLib"/>
+    <property name="common.lib" value=".\common\lib"/>
+    <target name="clean">
+        <delete includeEmptyDirs="true">
+            <fileset dir="${build}"/>
+            <fileset dir="${dest}"/>
+        </delete>
+    </target>
+    <target name="build">
+        <mkdir dir="${build}"/>
+        <mkdir dir="${build.class}"/>
+        <mkdir dir="${dest}"/>
+        <javac srcdir="${src}" destdir="${build.class}" encoding="utf-8">
+            <classpath>
+                <fileset dir="${3rd.lib}">
+                    <include name="**\*.jar"/>
+                </fileset>
+                <fileset dir="${common.lib}">
+                    <include name="**\*.jar"/>
+                </fileset>
+
+            </classpath>
+        </javac>
+        <copy todir="${build.class}">
+            <fileset dir="${src}">
+                <include name="*.xml"/>
+                <include name="**\*.xml"/>
+            </fileset>
+        </copy>
+        <copy todir="${build}">
+            <fileset dir="web">
+                <include name="**\*.*"/>
+            </fileset>
+        </copy>
+        <zip destfile="${dest}\${app-name}.war">
+            <fileset dir="${build}">
+                <exclude name="${build}"/>
+            </fileset>
+        </zip>
+    </target>
+    <target name="deploy" depends="build">
+        <copy file="${dest}\${app-name}.war" todir="${jboss-dir}"/>
+    </target>
+</project>
+ 

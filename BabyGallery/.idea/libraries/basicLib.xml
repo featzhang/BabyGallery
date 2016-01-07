@@ -1,0 +1,74 @@
+<component name="libraryTable">
+  <library name="basicLib">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/apache-commons" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/commons-exec" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/fastjson" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/httpclient4.1" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/jboss-4.2" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/mahout" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/memcached" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/others" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/rabbitmq" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/spring" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/struts-2.3" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/zip4j" />
+      <root url="jar://$PROJECT_DIR$/../../../tools/java/basicLib/mybatis-3.3.0.jar!/" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/apache-commons" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/commons-exec" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/fastjson" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/google-gson-2.2.4" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/httpclient4.1" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/jboss-4.2" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/mahout" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/memcached" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/others" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/rabbitmq" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/spring" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/struts-2.3" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/zip4j" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/fastjson" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/others" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/struts-2.3" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/fastjson" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/google-gson-2.2.4" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/others" />
+      <root url="file://$PROJECT_DIR$/../../../tools/java/basicLib/struts-2.3" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/apache-commons" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/apache-commons" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/commons-exec" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/commons-exec" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/fastjson" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/fastjson" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/google-gson-2.2.4" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/httpclient4.1" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/httpclient4.1" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/jboss-4.2" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/jboss-4.2" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/mahout" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/mahout" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/memcached" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/memcached" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/others" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/others" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/rabbitmq" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/rabbitmq" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/spring" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/spring" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/struts-2.3" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/struts-2.3" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/zip4j" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/zip4j" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/fastjson" recursive="false" type="SOURCES" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/fastjson" recursive="false" type="SOURCES" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/google-gson-2.2.4" recursive="false" type="SOURCES" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/others" recursive="false" type="SOURCES" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/others" recursive="false" type="SOURCES" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/struts-2.3" recursive="false" type="SOURCES" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../tools/java/basicLib/struts-2.3" recursive="false" type="SOURCES" />
+  </library>
+</component>

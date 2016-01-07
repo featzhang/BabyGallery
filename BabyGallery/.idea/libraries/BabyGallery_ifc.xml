@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="BabyGallery_ifc">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/common/lib/BabyGallery_ifc.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../BabyGalleryEJB/src" />
+    </SOURCES>
+  </library>
+</component>

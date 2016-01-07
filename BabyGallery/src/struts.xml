@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <package name="user" extends="struts-default,json-default">
+        <action name="registerNewUser" class="club.guadazi.babyGallery.UserAction"
+                method="registerNewUser">
+            <result name="success" type="json">
+                <param name="root">id</param>
+            </result>
+        </action>
+        <action name="findUser" class="club.guadazi.babyGallery.UserAction"
+                method="findUser">
+            <result name="success" type="json">
+                <param name="root">userData</param>
+            </result>
+        </action>
+        <action name="updateUser" class="club.guadazi.babyGallery.UserAction"
+                method="updateUser">
+            <result name="success" type="json">
+                <param name="root">userData</param>
+            </result>
+        </action>
+    </package>
+    <package name="viewer" extends="struts-default,json-default">
+        <action name="addNewViewer" class="club.guadazi.babyGallery.ViewerAction"
+                method="addNewViewer">
+            <result name="success" type="json">
+                <param name="root">id</param>
+            </result>
+        </action>
+        <action name="listViewers" class="club.guadazi.babyGallery.ViewerAction"
+                method="listViewers">
+            <result name="success" type="json">
+                <param name="root">viewerDatas</param>
+            </result>
+        </action>
+        <action name="updateViewer" class="club.guadazi.babyGallery.ViewerAction"
+                method="updateViewer">
+            <result name="success" type="json">
+                <param name="root">viewerData</param>
+            </result>
+        </action>
+    </package>
+    <package name="messages" extends="struts-default,json-default">
+        <action name="listMessages" class="club.guadazi.babyGallery.MessageAction"
+                method="listMessages">
+            <result name="success" type="json">
+                <param name="root">messageDatas</param>
+            </result>
+            <result name="error" type="json">
+                <param name="root">messageDatas</param>
+            </result>
+        </action>
+        <action name="addMessage" class="club.guadazi.babyGallery.MessageAction"
+                method="addMessage">
+            <result name="success" type="json">
+                <param name="root">messageId</param>
+            </result>
+        </action>
+        <action name="updateMessage" class="club.guadazi.babyGallery.MessageAction"
+                method="updateMessage">
+            <result name="success" type="json">
+                <param name="root">messageData</param>
+            </result>
+        </action>
+        <action name="deleteMessage" class="club.guadazi.babyGallery.MessageAction"
+                method="deleteMessage">
+            <result name="success" type="json">
+                <param name="root">messageData</param>
+            </result>
+        </action>
+    </package>
+
+
+</struts>
