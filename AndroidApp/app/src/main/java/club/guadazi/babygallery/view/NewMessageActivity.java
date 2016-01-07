@@ -1,4 +1,4 @@
-package club.guadazi.babygallery;
+package club.guadazi.babygallery.view;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -33,8 +33,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import club.guadazi.babygallery.entity.MessageData;
-import club.guadazi.babygallery.net.NetWorkConstant;
+import club.guadazi.babygallery.R;
+import club.guadazi.babygallery.provider.entity.MessageData;
 import club.guadazi.babygallery.resources.ConstantValues;
 
 public class NewMessageActivity extends Activity {
@@ -164,7 +164,7 @@ public class NewMessageActivity extends Activity {
             AsyncHttpClient asyncHttpClient = new AsyncHttpClient("");
             RequestParams requestParams = new RequestParams();
             requestParams.put("messageDataString", json);
-            asyncHttpClient.post(this, NetWorkConstant.CREATE_NEW_MESSAGE, requestParams, new AsyncHttpResponseHandler() {
+            asyncHttpClient.post(this, ConstantValues.CREATE_NEW_MESSAGE, requestParams, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String s) {
                     Log.d(TAG, "response: " + s);

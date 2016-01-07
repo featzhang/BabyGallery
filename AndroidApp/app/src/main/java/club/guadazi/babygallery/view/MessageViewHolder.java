@@ -1,4 +1,4 @@
-package club.guadazi.babygallery;
+package club.guadazi.babygallery.view;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -16,7 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import club.guadazi.babygallery.entity.MessageData;
+import club.guadazi.babygallery.R;
+import club.guadazi.babygallery.provider.entity.MessageData;
 
 public class MessageViewHolder {
     public interface MessageAction {
@@ -59,6 +59,7 @@ public class MessageViewHolder {
 
     public void setMessage(MessageData message) {
         this.message = message;
+        commentImageView.setImageResource(R.drawable.comment);
         commentCountTextView.setText("10535");
         commentTextView.setText(message.getContent());
         String imageIdIs = message.getImageIds();
@@ -69,12 +70,14 @@ public class MessageViewHolder {
                 imageIds[i] = Integer.parseInt(imageIdArray[i]);
             }
         }
+        MessageItemImageGridAdaptor messageItemImageGridAdaptor = new MessageItemImageGridAdaptor();
+        imagesGridView.setAdapter(messageItemImageGridAdaptor);
         MessageLongClickListener longClickListener = new MessageLongClickListener(message);
         commentTextView.setOnLongClickListener(longClickListener);
-
+        layout.setOnLongClickListener(longClickListener);
     }
 
-    public class ImageGridAdaptor extends BaseAdapter {
+    public class MessageItemImageGridAdaptor extends BaseAdapter {
 
         @Override
         public int getCount() {
@@ -97,7 +100,16 @@ public class MessageViewHolder {
 
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
-            return null;
+
+
+            ImageView imageView = new ImageView(mContext);
+            imageView.setScaleType(ImageView.ScaleType.CENTER);
+            float dimension = mContext.getResources().getDimension(R.dimen.message_item_image_size);
+            imageView.setLayoutParams(new ViewGroup.LayoutParams((int)dimension,(int)dimension));
+            imageView.setImageResource(R.drawable.default_image);
+
+
+            return imageView;
         }
     }
 

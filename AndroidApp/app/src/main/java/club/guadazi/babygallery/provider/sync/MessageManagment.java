@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import club.guadazi.babygallery.entity.MessageData;
+import club.guadazi.babygallery.provider.entity.MessageData;
 import club.guadazi.babygallery.provider.dao.MessageDao;
 
 public class MessageManagment {

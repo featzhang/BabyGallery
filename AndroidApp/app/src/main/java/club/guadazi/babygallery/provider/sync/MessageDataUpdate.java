@@ -1,6 +1,6 @@
 package club.guadazi.babygallery.provider.sync;
 
-import club.guadazi.babygallery.entity.MessageData;
+import club.guadazi.babygallery.provider.entity.MessageData;
 
 public class MessageDataUpdate {
     private MessageData messageData;

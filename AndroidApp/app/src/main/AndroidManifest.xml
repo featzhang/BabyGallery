@@ -3,7 +3,7 @@
     package="club.guadazi.babygallery">
 
     <application
-        android:name=".BabyGalleryApplication"
+        android:name=".view.BabyGalleryApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NewMessageActivity"
+            android:name=".view.NewMessageActivity"
             android:label="@string/add_message" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />

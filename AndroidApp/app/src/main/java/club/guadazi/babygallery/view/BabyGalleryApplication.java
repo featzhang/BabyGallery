@@ -1,4 +1,4 @@
-package club.guadazi.babygallery;
+package club.guadazi.babygallery.view;
 
 import android.app.Application;
 

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import club.guadazi.babygallery.entity.MessageData;
+import club.guadazi.babygallery.provider.entity.MessageData;
 
 public class MessageDao {
     private Context mContext;

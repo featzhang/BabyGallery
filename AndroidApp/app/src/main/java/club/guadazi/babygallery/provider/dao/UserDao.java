@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import club.guadazi.babygallery.entity.UserData;
+import club.guadazi.babygallery.provider.entity.UserData;
 
 /**
  * Created by Mariaaron on 16/1/6.

@@ -1,4 +1,4 @@
-package club.guadazi.babygallery.entity;
+package club.guadazi.babygallery.provider.entity;
 
 
 import java.io.Serializable;
@@ -13,7 +13,17 @@ public class MessageData implements Serializable {
     //    private String title;
     private String content;
     private Timestamp markPoint;
-
+    public static final String CREATE_SQL = "CREATE TABLE " + MessageData.TABLE_NAME +
+            " (\n" +
+            "  " + MessageData.TABLE_COLUMN_ID +
+            " integer PRIMARY KEY  NOT NULL,\n" +
+            "  " + MessageData.TABLE_COLUMN_USER_ID + " integer,\n" +
+            "  " + MessageData.TABLE_COLUMN_IMAGE_IDS + " char(100),\n" +
+            "  " + MessageData.TABLE_COLUMN_IMAGE_TAG + " char(10),\n" +
+            "  " + MessageData.TABLE_COLUMN_UPDATE_TIME + " datetime,\n" +
+            "  " + MessageData.TABLE_COLUMN_MARK_POINT + " datetime,\n" +
+            "  " + MessageData.TABLE_COLUMN_CONTENT + " char(500)\n" +
+            ");";
     public static final String TABLE_NAME = "t_message";
     public static final String TABLE_COLUMN_ID = "id";
     public static final String TABLE_COLUMN_USER_ID = "user_id";
