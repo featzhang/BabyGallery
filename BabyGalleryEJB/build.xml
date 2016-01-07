@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<project name="baby-gallery-ejb" default="build" basedir=".">
+    <property name="app-name" value="BabyGallery"/>
+    <property name="src" value="src"/>
+    <property name="build" value="build"/>
+    <property name="build.class" value="build"/>
+    <property name="dest" value="dest"/>
+    <property name="jboss-dir" value="\Users\Mariaaron\devkit\jboss-eap-6.3\standalone\deployments\BabyGallery.ear"/>
+    <property name="3rd.lib" value="\Users\Mariaaron\kuaiPan\快盘\tools\java\basicLib"/>
+    <property name="common.lib" value="..\BabyGallery\common\lib"/>
+
+    <target name="clean">
+        <delete includeEmptyDirs="true">
+            <fileset dir="${dest}"/>
+        </delete>
+        <delete includeEmptyDirs="true">
+            <fileset dir="${build}"/>
+        </delete>
+        <delete>
+            <fileset dir="${common.lib}"/>
+        </delete>
+
+    </target>
+    <target name="build">
+        <mkdir dir="${build}"/>
+        <javac srcdir="${src}" destdir="${build.class}" encoding="utf-8">
+            <include name="**/*.java"/>
+            <classpath>
+                <fileset dir="${3rd.lib}">
+                    <include name="**\*.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
+        <copy todir="${build.class}">
+            <fileset dir="${src}">
+                <include name="*.xml"/>
+                <include name="**\*.xml"/>
+            </fileset>
+        </copy>
+        <jar destfile="${dest}\${app-name}_ifc.jar">
+            <fileset dir="${build.class}" includes="**/data/**,**/ifc/**,**/common/**"/>
+        </jar>
+        <jar destfile="${dest}\${app-name}_ejb.jar">
+            <metainf dir="${src}\META-INF" includes="**"/>
+            <fileset dir="${build.class}" includes="**/dao/**,**/entity/**,**/ejb/**"/>
+        </jar>
+        <copy file="${dest}\${app-name}_ifc.jar" todir="${common.lib}\"/>
+    </target>
+    <target name="deploy" depends="build">
+        <copy file="${dest}\${app-name}_ejb.jar" todir="${jboss-dir}"/>
+        <copy file="${dest}\${app-name}_ifc.jar" todir="${jboss-dir}\lib"/>
+    </target>
+</project>

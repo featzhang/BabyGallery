@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">BabyGallery</string>
+    <string name="action_settings">Settings</string>
+    <string name="add_message">add Message</string>
+    <string name="upload">Upload</string>
+    <string name="name">Name</string>
+    <string name="title">Title</string>
+    <string name="content">Content</string>
+    <string name="mark_point">Mark Point</string>
+    <string name="submit">Submit</string>
+    <string name="sure">OK</string>
+    <string name="send">send</string>
+</resources>
