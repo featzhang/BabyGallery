@@ -25,13 +25,17 @@ import java.util.List;
 
 import club.guadazi.babygallery.entity.MessageData;
 import club.guadazi.babygallery.net.NetWorkConstant;
-import club.guadazi.babygallery.resources.MessageImageManager;
+import club.guadazi.babygallery.provider.dao.MessageDao;
+import club.guadazi.babygallery.provider.sync.MessageDataUpdate;
+import club.guadazi.babygallery.provider.sync.MessageManagment;
+import club.guadazi.babygallery.resources.ConstantValues;
 
 public class MainActivity extends Activity {
 
     private static final int ADD_NEW_MESSAGE = 0x01;
     private ListView listView;
     private List<MessageData> messageDatas;
+    private List<MessageData> localMessageDatas;
     private MessagesAdaptor adapter;
     private final String TAG = "MainActivity";
     private MessageViewHolder.MessageAction messageAction;
@@ -66,25 +70,34 @@ public class MainActivity extends Activity {
                 });
             }
         };
+        messageDatas = new MessageDao(this).listAllMessageByUserId(ConstantValues.getUserId(this));
         adapter = new MessagesAdaptor();
         listView.setAdapter(adapter);
 
         AsyncHttpClient asyncHttpClient = new AsyncHttpClient(null);
         RequestParams requestParams = new RequestParams();
-        requestParams.put("userId", MessageImageManager.getUserId(this) + "");
+        requestParams.put("userId", ConstantValues.getUserId(this) + "");
         asyncHttpClient.post(NetWorkConstant.GET_MESSAGES_BY_USER_ID, requestParams, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String response) {
                 Log.d(TAG, response);
                 Gson gson = new Gson();
-                List<MessageData> messageDatas1 = gson.fromJson(response, new TypeToken<List<MessageData>>() {
+                List<MessageData> remoteDatas = gson.fromJson(response, new TypeToken<List<MessageData>>() {
                 }.getType());
-                if (messageDatas1 != null) {
-                    messageDatas = messageDatas1;
-                    for (MessageData messageData : messageDatas1) {
+
+                if (remoteDatas != null) {
+                    if (messageDatas != null) {
+                        messageDatas.clear();
+                        messageDatas.addAll(remoteDatas);
+                    } else {
+                        messageDatas = remoteDatas;
+                    }
+                    for (MessageData messageData : remoteDatas) {
                         Log.d(TAG, messageData.toString());
                     }
                     adapter.notifyDataSetChanged();
+                    List<MessageDataUpdate> dataUpdates = MessageManagment.compare(remoteDatas, new MessageDao(MainActivity.this).listAllMessageByUserId(ConstantValues.getUserId(MainActivity.this)));
+                    MessageManagment.updateLocalMessageData(MainActivity.this, dataUpdates);
                 }
             }
 

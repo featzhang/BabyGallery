@@ -35,7 +35,7 @@ import java.util.List;
 
 import club.guadazi.babygallery.entity.MessageData;
 import club.guadazi.babygallery.net.NetWorkConstant;
-import club.guadazi.babygallery.resources.MessageImageManager;
+import club.guadazi.babygallery.resources.ConstantValues;
 
 public class NewMessageActivity extends Activity {
     private static final int CREATE_NEW_MESSAGE_SUCCESS = 0x01;
@@ -157,7 +157,7 @@ public class NewMessageActivity extends Activity {
             progressDialog.show();
             final MessageData messageData = new MessageData();
             messageData.setContent(comment);
-            messageData.setUserId(MessageImageManager.getUserId(this));
+            messageData.setUserId(ConstantValues.getUserId(this));
             Gson gson = new Gson();
             String json = gson.toJson(messageData);
             Log.d(TAG, "json:" + json);

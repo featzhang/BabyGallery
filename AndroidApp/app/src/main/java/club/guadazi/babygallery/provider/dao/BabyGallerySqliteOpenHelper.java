@@ -5,6 +5,8 @@ import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import club.guadazi.babygallery.entity.MessageData;
+
 /**
  * Created by Mariaaron on 16/1/6.
  */
@@ -30,6 +32,18 @@ public class BabyGallerySqliteOpenHelper extends SQLiteOpenHelper {
                 "  photo_count integer\n" +
                 ");";
         sqLiteDatabase.execSQL(sql);
+        String sql2 = "CREATE TABLE " + MessageData.TABLE_NAME +
+                " (\n" +
+                "  " + MessageData.TABLE_COLUMN_ID +
+                " integer PRIMARY KEY  NOT NULL,\n" +
+                "  " + MessageData.TABLE_COLUMN_USER_ID + " integer,\n" +
+                "  " + MessageData.TABLE_COLUMN_IMAGE_IDS + " char(100),\n" +
+                "  " + MessageData.TABLE_COLUMN_IMAGE_TAG + " char(10),\n" +
+                "  " + MessageData.TABLE_COLUMN_UPDATE_TIME + " datetime,\n" +
+                "  " + MessageData.TABLE_COLUMN_MARK_POINT + " datetime,\n" +
+                "  " + MessageData.TABLE_COLUMN_CONTENT + " char(500)\n" +
+                ");";
+        sqLiteDatabase.execSQL(sql2);
     }
 
     @Override
