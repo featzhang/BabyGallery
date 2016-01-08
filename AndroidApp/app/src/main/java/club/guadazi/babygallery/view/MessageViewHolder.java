@@ -1,6 +1,9 @@
 package club.guadazi.babygallery.view;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -15,8 +18,11 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import java.io.File;
+
 import club.guadazi.babygallery.R;
 import club.guadazi.babygallery.provider.entity.MessageData;
+import club.guadazi.babygallery.provider.sync.ImageLocalManager;
 
 public class MessageViewHolder {
     public interface MessageAction {
@@ -55,7 +61,7 @@ public class MessageViewHolder {
     }
 
     private MessageData message;
-    private int[] imageIds;
+    private long[] imageIds;
 
     public void setMessage(MessageData message) {
         this.message = message;
@@ -64,10 +70,10 @@ public class MessageViewHolder {
         commentTextView.setText(message.getContent());
         String imageIdIs = message.getImageIds();
         if (!TextUtils.isEmpty(imageIdIs)) {
-            String[] imageIdArray = imageIdIs.split("::");
-            imageIds = new int[imageIdArray.length];
+            String[] imageIdArray = imageIdIs.split(MessageData.IMAGE_ID_SEPERATER);
+            imageIds = new long[imageIdArray.length];
             for (int i = 0; i < imageIdArray.length; i++) {
-                imageIds[i] = Integer.parseInt(imageIdArray[i]);
+                imageIds[i] = Long.parseLong(imageIdArray[i]);
             }
         }
         MessageItemImageGridAdaptor messageItemImageGridAdaptor = new MessageItemImageGridAdaptor();
@@ -75,6 +81,7 @@ public class MessageViewHolder {
         MessageLongClickListener longClickListener = new MessageLongClickListener(message);
         commentTextView.setOnLongClickListener(longClickListener);
         layout.setOnLongClickListener(longClickListener);
+        imagesGridView.setOnLongClickListener(longClickListener);
     }
 
     public class MessageItemImageGridAdaptor extends BaseAdapter {
@@ -101,13 +108,16 @@ public class MessageViewHolder {
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
 
-
             ImageView imageView = new ImageView(mContext);
-            imageView.setScaleType(ImageView.ScaleType.CENTER);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             float dimension = mContext.getResources().getDimension(R.dimen.message_item_image_size);
-            imageView.setLayoutParams(new ViewGroup.LayoutParams((int)dimension,(int)dimension));
-            imageView.setImageResource(R.drawable.default_image);
-
+            imageView.setLayoutParams(new ViewGroup.LayoutParams((int) dimension, (int) dimension));
+            Drawable bitmap = ImageLocalManager.getThumbnailByImageId(mContext, imageIds[i]);
+            if (bitmap != null) {
+                imageView.setImageDrawable(bitmap);
+            } else {
+                imageView.setImageResource(R.drawable.default_image);
+            }
 
             return imageView;
         }
@@ -127,7 +137,7 @@ public class MessageViewHolder {
             View popupWindowView = ((LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.message_item_popup_menu, null, false);
 
             // 创建PopupWindow实例,200,LayoutParams.MATCH_PARENT分别是宽度和高度
-            popupWindow = new PopupWindow(popupWindowView, 100, 100, true);
+            popupWindow = new PopupWindow(popupWindowView, 500, 500, true);
             TextView deleteTextView = (TextView) popupWindowView.findViewById(R.id.message_item_menu_delete);
             deleteTextView.setOnClickListener(new View.OnClickListener() {
                 @Override

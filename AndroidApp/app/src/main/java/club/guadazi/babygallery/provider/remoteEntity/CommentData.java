@@ -1,4 +1,4 @@
-package club.guadazi.babygallery.provider.entity;
+package club.guadazi.babygallery.provider.remoteEntity;
 
 import java.io.Serializable;
 

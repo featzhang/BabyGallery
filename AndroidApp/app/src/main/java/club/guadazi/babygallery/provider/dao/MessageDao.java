@@ -29,6 +29,7 @@ public class MessageDao {
     public List<MessageData> listAllMessageByUserId(int userId) {
         Cursor cursor = database.query(MessageData.TABLE_NAME,
                 new String[]{MessageData.TABLE_COLUMN_ID,
+                        MessageData.TABLE_COLUMN_REMOTE_ID,
                         MessageData.TABLE_COLUMN_CONTENT,
                         MessageData.TABLE_COLUMN_IMAGE_IDS,
                         MessageData.TABLE_COLUMN_IMAGE_TAG,
@@ -40,6 +41,7 @@ public class MessageDao {
             MessageData messageData = new MessageData();
             int id = cursor.getInt(cursor.getColumnIndex(MessageData.TABLE_COLUMN_ID));
             String content = cursor.getString(cursor.getColumnIndex(MessageData.TABLE_COLUMN_CONTENT));
+            int remoteId = cursor.getInt(cursor.getColumnIndex(MessageData.TABLE_COLUMN_REMOTE_ID));
             String imageIds = cursor.getString(cursor.getColumnIndex(MessageData.TABLE_COLUMN_IMAGE_IDS));
             String tag = cursor.getString(cursor.getColumnIndex(MessageData.TABLE_COLUMN_IMAGE_TAG));
             String markPointString = cursor.getString(cursor.getColumnIndex(MessageData.TABLE_COLUMN_MARK_POINT));
@@ -49,6 +51,7 @@ public class MessageDao {
             messageData.setId(id);
             messageData.setContent(content);
             messageData.setImageIds(imageIds);
+            messageData.setRemoteId(remoteId);
             messageData.setTag(tag);
 
             try {
@@ -77,7 +80,7 @@ public class MessageDao {
         return messageDatas;
     }
 
-    public MessageData findByMessageId(int messageId) {
+    public MessageData findByMessageRemoteId(int messageId) {
         Cursor cursor = database.query(MessageData.TABLE_NAME,
                 new String[]{MessageData.TABLE_COLUMN_ID,
                         MessageData.TABLE_COLUMN_CONTENT,
@@ -85,7 +88,7 @@ public class MessageDao {
                         MessageData.TABLE_COLUMN_IMAGE_TAG,
                         MessageData.TABLE_COLUMN_MARK_POINT,
                         MessageData.TABLE_COLUMN_UPDATE_TIME,
-                        MessageData.TABLE_COLUMN_USER_ID}, MessageData.TABLE_COLUMN_ID + "=?", new String[]{messageId + ""}, null, null, null);
+                        MessageData.TABLE_COLUMN_USER_ID}, MessageData.TABLE_COLUMN_REMOTE_ID + "=?", new String[]{messageId + ""}, null, null, null);
         while (cursor.moveToNext()) {
             MessageData messageData = new MessageData();
             int id = cursor.getInt(cursor.getColumnIndex(MessageData.TABLE_COLUMN_ID));
@@ -95,6 +98,7 @@ public class MessageDao {
             String markPointString = cursor.getString(cursor.getColumnIndex(MessageData.TABLE_COLUMN_MARK_POINT));
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             messageData.setId(id);
+            messageData.setRemoteId(messageId);
             messageData.setContent(content);
             messageData.setImageIds(imageIds);
             messageData.setTag(tag);
@@ -118,24 +122,28 @@ public class MessageDao {
         return null;
     }
 
-    public int deleteByMessage(int messageId) {
-        return database.delete(MessageData.TABLE_NAME, MessageData.TABLE_COLUMN_ID + "=?", new String[]{messageId + ""});
+    public int deleteByMessageRemoteId(int messageId) {
+        return database.delete(MessageData.TABLE_NAME, MessageData.TABLE_COLUMN_REMOTE_ID + "=?", new String[]{messageId + ""});
     }
 
-    public int update(MessageData messageData) {
+    public int deleteByMessageId(int id) {
+        return database.delete(MessageData.TABLE_NAME, MessageData.TABLE_COLUMN_ID + "=?", new String[]{id + ""});
+    }
+
+    public int updateByLocalId(MessageData messageData) {
         if (messageData == null) {
             return -1;
         }
         ContentValues contentValues = new ContentValues();
         contentValues.put(MessageData.TABLE_COLUMN_ID, messageData.getId());
+        contentValues.put(MessageData.TABLE_COLUMN_REMOTE_ID, messageData.getRemoteId());
         contentValues.put(MessageData.TABLE_COLUMN_CONTENT, messageData.getContent());
         contentValues.put(MessageData.TABLE_COLUMN_IMAGE_IDS, messageData.getImageIds());
         contentValues.put(MessageData.TABLE_COLUMN_IMAGE_TAG, messageData.getTag());
         contentValues.put(MessageData.TABLE_COLUMN_MARK_POINT, String.valueOf(messageData.getMarkPoint()));
         contentValues.put(MessageData.TABLE_COLUMN_UPDATE_TIME, String.valueOf(messageData.getUpdateTime()));
         contentValues.put(MessageData.TABLE_COLUMN_USER_ID, messageData.getUserId());
-        int id = database.update(MessageData.TABLE_NAME, contentValues, MessageData.TABLE_COLUMN_ID + "=?", new String[]{messageData.getId() + ""});
-        return id;
+        return database.update(MessageData.TABLE_NAME, contentValues, MessageData.TABLE_COLUMN_ID + "=?", new String[]{messageData.getId() + ""});
 
     }
 
@@ -145,14 +153,14 @@ public class MessageDao {
             return -1;
         }
         ContentValues contentValues = new ContentValues();
-        contentValues.put(MessageData.TABLE_COLUMN_ID, messageData.getId());
+        contentValues.put(MessageData.TABLE_COLUMN_REMOTE_ID, messageData.getRemoteId());
         contentValues.put(MessageData.TABLE_COLUMN_CONTENT, messageData.getContent());
         contentValues.put(MessageData.TABLE_COLUMN_IMAGE_IDS, messageData.getImageIds());
         contentValues.put(MessageData.TABLE_COLUMN_IMAGE_TAG, messageData.getTag());
         contentValues.put(MessageData.TABLE_COLUMN_MARK_POINT, String.valueOf(messageData.getMarkPoint()));
         contentValues.put(MessageData.TABLE_COLUMN_UPDATE_TIME, String.valueOf(messageData.getUpdateTime()));
         contentValues.put(MessageData.TABLE_COLUMN_USER_ID, messageData.getUserId());
-        long id = database.insert(MessageData.TABLE_NAME, null, contentValues);
-        return id;
+        return database.insert(MessageData.TABLE_NAME, null, contentValues);
     }
+
 }

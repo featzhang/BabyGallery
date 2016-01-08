@@ -1,4 +1,4 @@
-package club.guadazi.babygallery.provider.entity;
+package club.guadazi.babygallery.provider.remoteEntity;
 
 
 import java.io.Serializable;
@@ -16,7 +16,7 @@ public class UserData implements Serializable {
     public static String TABLE_COLUMN_ID = "id";
     public static String TABLE_COLUMN_EMAIL = "email";
     public static String TABLE_COLUMN_PHOTO_COUNT = "photo_count";
-    public static String CREATE_SQL = "CREATE TABLE t_user (\n" +
+    public static final String CREATE_SQL = "CREATE TABLE t_user (\n" +
             "  id integer PRIMARY KEY AUTOINCREMENT NOT NULL,\n" +
             "  user_name char(128),\n" +
             "  email char(128),\n" +

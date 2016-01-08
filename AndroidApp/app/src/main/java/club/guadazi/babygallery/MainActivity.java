@@ -16,13 +16,13 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import club.guadazi.babygallery.provider.entity.MessageData;
-import club.guadazi.babygallery.provider.dao.MessageDao;
-import club.guadazi.babygallery.provider.sync.MessageDataUpdate;
-import club.guadazi.babygallery.provider.sync.MessageManagment;
-import club.guadazi.babygallery.resources.ConstantValues;
+import club.guadazi.babygallery.provider.remoteEntity.RemoteMessageEntity;
+import club.guadazi.babygallery.provider.sync.MessageManager;
+import club.guadazi.babygallery.util.ConstantValues;
 import club.guadazi.babygallery.view.MessageAdaptor;
 import club.guadazi.babygallery.view.MessageViewHolder;
 import club.guadazi.babygallery.view.NewMessageActivity;
@@ -44,19 +44,19 @@ public class MainActivity extends Activity {
         messageAction = new MessageViewHolder.MessageAction() {
 
             @Override
-            public void delete(MessageData message) {
+            public void delete(final MessageData message) {
                 AsyncHttpClient asyncHttpClient = new AsyncHttpClient(null);
                 RequestParams requestParams = new RequestParams();
-                requestParams.put("messageId", message.getId() + "");
+                requestParams.put("messageId", message.getRemoteId() + "");
                 asyncHttpClient.post(MainActivity.this, ConstantValues.DELETE_MESSAGE, requestParams, new AsyncHttpResponseHandler() {
                     @Override
                     public void onFinish() {
                         Log.d(TAG, "MessageViewHolder.MessageAction onFinish");
-                        super.onFinish();
+//                        super.onFinish();
                         Toast.makeText(MainActivity.this, "已删除！", Toast.LENGTH_SHORT).show();
-                        adapter.setMessageDatas(messageDatas);
-
-                        adapter.notifyDataSetChanged();
+                        int index = MessageManager.deleteLocalMessageById(MainActivity.this, message.getId());
+                        messageDatas = MessageManager.loadAllLocalMessages(MainActivity.this);
+                        setAndRefreshListView(messageDatas);
                     }
 
                     @Override
@@ -66,7 +66,7 @@ public class MainActivity extends Activity {
                 });
             }
         };
-        messageDatas = new MessageDao(this).listAllMessageByUserId(ConstantValues.getUserId(this));
+        messageDatas = MessageManager.loadAllLocalMessages(this);
         adapter = new MessageAdaptor(this, messageAction);
         adapter.setMessageDatas(messageDatas);
         listView.setAdapter(adapter);
@@ -77,37 +77,54 @@ public class MainActivity extends Activity {
         asyncHttpClient.post(ConstantValues.GET_MESSAGES_BY_USER_ID, requestParams, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String response) {
-                Log.d(TAG, response);
+                Log.d(TAG, "response:" + response);
+                if (response.equals("null")) {
+                    MessageManager.deleteAllLocalMessageData(MainActivity.this);
+                    setAndRefreshListView(null);
+                    return;
+                }
                 Gson gson = new Gson();
-                List<MessageData> remoteDatas = gson.fromJson(response, new TypeToken<List<MessageData>>() {
+                List<RemoteMessageEntity> remoteDatas = gson.fromJson(response, new TypeToken<List<RemoteMessageEntity>>() {
                 }.getType());
 
                 if (remoteDatas != null) {
+
                     if (messageDatas != null) {
                         messageDatas.clear();
-                        messageDatas.addAll(remoteDatas);
+                        for (RemoteMessageEntity remoteData : remoteDatas) {
+                            messageDatas.add(new MessageData(remoteData));
+                        }
+
+
                     } else {
-                        messageDatas = remoteDatas;
+                        messageDatas = new ArrayList<MessageData>();
+                        for (RemoteMessageEntity remoteData : remoteDatas) {
+                            messageDatas.add(new MessageData(remoteData));
+                        }
                     }
-                    for (MessageData messageData : remoteDatas) {
-                        Log.d(TAG, messageData.toString());
+                    for (RemoteMessageEntity remoteData : remoteDatas) {
+                        Log.i(TAG, response);
                     }
-                    adapter.setMessageDatas(messageDatas);
-                    adapter.notifyDataSetChanged();
-                    List<MessageDataUpdate> dataUpdates = MessageManagment.compare(remoteDatas, new MessageDao(MainActivity.this).listAllMessageByUserId(ConstantValues.getUserId(MainActivity.this)));
-                    MessageManagment.updateLocalMessageData(MainActivity.this, dataUpdates);
+                    setAndRefreshListView(messageDatas);
+                    MessageManager.updateLocalMessagesByRemote(MainActivity.this, remoteDatas);
                 }
             }
 
             @Override
             public void onFailure(Throwable throwable) {
-                super.onFailure(throwable);
+//                super.onFailure(throwable);
+                Log.e(TAG, "connect internet failure!");
                 Toast.makeText(MainActivity.this, "联网失败!", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
+    private void setAndRefreshListView(List<MessageData> messageDatas) {
+        MessageAdaptor adapter = (MessageAdaptor) listView.getAdapter();
+        adapter.setMessageDatas(messageDatas);
+        adapter.notifyDataSetChanged();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -126,5 +143,15 @@ public class MainActivity extends Activity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (resultCode) {
+            case NewMessageActivity.CREATE_NEW_MESSAGE_SUCCESS:
+                messageDatas = MessageManager.loadAllLocalMessages(this);
+                setAndRefreshListView(messageDatas);
+                break;
+        }
     }
 }
