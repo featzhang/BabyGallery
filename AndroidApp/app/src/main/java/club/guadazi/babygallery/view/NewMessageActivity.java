@@ -5,10 +5,9 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -45,7 +44,6 @@ import club.guadazi.babygallery.provider.entity.MissionManager;
 import club.guadazi.babygallery.provider.sync.ImageLocalManager;
 import club.guadazi.babygallery.provider.sync.MessageManager;
 import club.guadazi.babygallery.util.ConstantValues;
-import club.guadazi.babygallery.util.ImageTool;
 
 public class NewMessageActivity extends Activity {
     public static final int CREATE_NEW_MESSAGE_SUCCESS = 0x01;
@@ -142,9 +140,9 @@ public class NewMessageActivity extends Activity {
             }
             messageData.setImageIds(imageString);
         }
-
+        Log.d(TAG, "submit data:" + messageData);
         Gson gson = new Gson();
-        String json = gson.toJson(messageData);
+        String json = gson.toJson(messageData.toRemoteEntity());
         Log.d(TAG, "json:" + json);
         AsyncHttpClient asyncHttpClient = new AsyncHttpClient("");
         RequestParams requestParams = new RequestParams();
@@ -153,6 +151,12 @@ public class NewMessageActivity extends Activity {
             @Override
             public void onSuccess(String s) {
                 Log.d(TAG, "response: " + s);
+                if (s != null && !s.equals("null") && TextUtils.isEmpty(s)) {
+                    int id = Integer.parseInt(s);
+                    messageData.setRemoteId(id);
+                }
+
+
                 Toast.makeText(NewMessageActivity.this, "提交成功，新的 message id 为" + s, Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
                 MessageManager.addMessageToLocalDB(NewMessageActivity.this, messageData);

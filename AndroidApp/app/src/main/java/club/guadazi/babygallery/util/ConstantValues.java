@@ -8,7 +8,7 @@ public class ConstantValues {
         return 1;
     }
 
-    public final static String ipWithPort = "192.168.13.122:8080";
+    public final static String ipWithPort = "192.168.13.103:8080";
     public final static String GET_MESSAGES_BY_USER_ID = "http://" + ipWithPort +
             "/BabyGallery/listMessages.action";
     public final static String CREATE_NEW_MESSAGE = "http://" + ipWithPort +

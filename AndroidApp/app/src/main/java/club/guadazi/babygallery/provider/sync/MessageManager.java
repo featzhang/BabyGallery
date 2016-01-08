@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import club.guadazi.babygallery.MainActivity;
 import club.guadazi.babygallery.provider.dao.MessageDao;
@@ -38,12 +39,13 @@ public class MessageManager {
         }
         Map<Integer, MessageData> map = new HashMap<Integer, MessageData>();
         for (MessageData localData : localDatas) {
-            int id = localData.getId();
+            int id = localData.getRemoteId();
             map.put(id, localData);
         }
         for (RemoteMessageEntity remoteData : remoteDatas) {
             int id = remoteData.getId();
             MessageData messageData = map.get(id);
+            map.remove(id);
             if (messageData == null) {
                 messageDataUpdates.add(new MessageDataUpdate(new MessageData(remoteData), MessageDataUpdate.UPDATE_MODE.ADD));
             } else {
@@ -52,6 +54,14 @@ public class MessageManager {
                 if (localUpdateTime == null || !localUpdateTime.equals(remoteUpdateTime)) {
                     messageDataUpdates.add(new MessageDataUpdate(new MessageData(remoteData), MessageDataUpdate.UPDATE_MODE.UPDATE));
                 }
+            }
+        }
+        if (!map.isEmpty()) {
+            Set<Integer> integers = map.keySet();
+            for (Integer integer : integers) {
+                MessageData messageData = map.get(integer);
+                map.remove(integer);
+                messageDataUpdates.add(new MessageDataUpdate(messageData, MessageDataUpdate.UPDATE_MODE.DELETE));
             }
         }
         if (messageDataUpdates.size() == 0) {
@@ -76,7 +86,7 @@ public class MessageManager {
                     messageDao.updateByLocalId(messageDataUpdate.getMessageData());
                     break;
                 case DELETE:
-                    messageDao.deleteByMessageRemoteId(messageDataUpdate.getMessageData().getId());
+                    messageDao.deleteByMessageId(messageDataUpdate.getMessageData().getId());
                     break;
             }
         }

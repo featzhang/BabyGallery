@@ -7,4 +7,6 @@
     <dimen name="message_item_content_size">16sp</dimen>
     <dimen name="message_item_image_icon_size">100dp</dimen>
     <dimen name="message_item_image_size">100dp</dimen>
+    <dimen name="popup_menu_width">100dp</dimen>
+    <dimen name="popup_menu_height">100dp</dimen>
 </resources>

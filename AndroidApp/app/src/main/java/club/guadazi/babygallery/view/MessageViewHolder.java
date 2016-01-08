@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -111,7 +112,7 @@ public class MessageViewHolder {
             ImageView imageView = new ImageView(mContext);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             float dimension = mContext.getResources().getDimension(R.dimen.message_item_image_size);
-            imageView.setLayoutParams(new ViewGroup.LayoutParams((int) dimension, (int) dimension));
+            imageView.setLayoutParams(new AbsListView.LayoutParams((int) dimension, (int) dimension));
             Drawable bitmap = ImageLocalManager.getThumbnailByImageId(mContext, imageIds[i]);
             if (bitmap != null) {
                 imageView.setImageDrawable(bitmap);
@@ -137,7 +138,9 @@ public class MessageViewHolder {
             View popupWindowView = ((LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.message_item_popup_menu, null, false);
 
             // 创建PopupWindow实例,200,LayoutParams.MATCH_PARENT分别是宽度和高度
-            popupWindow = new PopupWindow(popupWindowView, 500, 500, true);
+            float popupMenuWidth = mContext.getResources().getDimension(R.dimen.popup_menu_width);
+            float popupMenuHeight = mContext.getResources().getDimension(R.dimen.popup_menu_height);
+            popupWindow = new PopupWindow(popupWindowView, (int) popupMenuWidth, (int) popupMenuHeight, true);
             TextView deleteTextView = (TextView) popupWindowView.findViewById(R.id.message_item_menu_delete);
             deleteTextView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -74,20 +74,6 @@ public class RemoteMessageEntity {
         this.markPoint = markPoint;
     }
 
-    @Override
-    public String toString() {
-        return "RemoteMessageEntity{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", tag='" + tag + '\'' +
-                ", imageIds='" + imageIds + '\'' +
-                ", uploadDate=" + uploadDate +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", markPoint=" + markPoint +
-                '}';
-    }
-
     public Timestamp getUploadDate() {
         return uploadDate;
     }
@@ -129,5 +115,19 @@ public class RemoteMessageEntity {
         result = 31 * result + (content != null ? content.hashCode() : 0);
         result = 31 * result + (markPoint != null ? markPoint.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RemoteMessageEntity{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", tag='" + tag + '\'' +
+                ", imageIds='" + imageIds + '\'' +
+                ", uploadDate=" + uploadDate +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", markPoint=" + markPoint +
+                '}';
     }
 }

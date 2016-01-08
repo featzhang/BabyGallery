@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -19,6 +20,8 @@ import club.guadazi.babygallery.util.ImageTool;
 import club.guadazi.babygallery.util.RandomStringUtils;
 
 public class ImageLocalManager {
+
+    private static final String TAG = "ImageLocalManager";
 
     public static String getImageFilePathInDB(Context context, long imageFileNameId) {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
@@ -70,7 +73,9 @@ public class ImageLocalManager {
         FileUtils.copyFile(path, localImageFilePath);
         ImageEntity imageEntity = new ImageEntity();
         imageEntity.setImageLocalName(localFileName);
-        return new ImageDao(context).add(imageEntity);
+        long id = new ImageDao(context).add(imageEntity);
+        Log.i(TAG, "id:" + id);
+        return id;
     }
 
     public static List<Long> addNewImages(Context context, List<String> paths) {
@@ -93,7 +98,9 @@ public class ImageLocalManager {
 
 
     public static Drawable getThumbnailByImageId(Context mContext, long imageId) {
+        Log.d(TAG, "image id: " + imageId);
         String imageFilePathInDB = getImageFilePathInDB(mContext, imageId);
+        Log.d(TAG, "fileName: " + imageFilePathInDB);
         if (imageFilePathInDB == null) {
             return null;
         }

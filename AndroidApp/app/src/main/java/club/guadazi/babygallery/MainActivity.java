@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -72,7 +73,7 @@ public class MainActivity extends Activity {
         listView.setAdapter(adapter);
 
         AsyncHttpClient asyncHttpClient = new AsyncHttpClient(null);
-        RequestParams requestParams = new RequestParams();
+        final RequestParams requestParams = new RequestParams();
         requestParams.put("userId", ConstantValues.getUserId(this) + "");
         asyncHttpClient.post(ConstantValues.GET_MESSAGES_BY_USER_ID, requestParams, new AsyncHttpResponseHandler() {
             @Override
@@ -83,7 +84,9 @@ public class MainActivity extends Activity {
                     setAndRefreshListView(null);
                     return;
                 }
-                Gson gson = new Gson();
+//                Gson gson = new Gson();
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+//                response = response.replace("T", "");
                 List<RemoteMessageEntity> remoteDatas = gson.fromJson(response, new TypeToken<List<RemoteMessageEntity>>() {
                 }.getType());
 
@@ -93,6 +96,7 @@ public class MainActivity extends Activity {
                         messageDatas.clear();
                         for (RemoteMessageEntity remoteData : remoteDatas) {
                             messageDatas.add(new MessageData(remoteData));
+                            Log.d(TAG, remoteData.toString());
                         }
 
 
@@ -103,7 +107,7 @@ public class MainActivity extends Activity {
                         }
                     }
                     for (RemoteMessageEntity remoteData : remoteDatas) {
-                        Log.i(TAG, response);
+                        Log.i(TAG, remoteData.toString());
                     }
                     setAndRefreshListView(messageDatas);
                     MessageManager.updateLocalMessagesByRemote(MainActivity.this, remoteDatas);

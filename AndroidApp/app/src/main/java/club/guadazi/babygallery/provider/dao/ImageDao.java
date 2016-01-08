@@ -19,7 +19,7 @@ public class ImageDao {
     }
 
     public String findImageName(long imageId) {
-        Cursor cursor = database.query(ImageEntity.TABLE_NAME, new String[]{ImageEntity.TABLE_COLUMN_ID, ImageEntity.TABLE_COLUMN_IMAGE_ID, ImageEntity.TABLE_COLUMN_IMAGE_LOCAL_NAME}, ImageEntity.TABLE_COLUMN_IMAGE_ID + "=?", new String[]{imageId + ""}, null, null, null);
+        Cursor cursor = database.query(ImageEntity.TABLE_NAME, new String[]{ImageEntity.TABLE_COLUMN_ID, ImageEntity.TABLE_COLUMN_REMOTE_IMAGE_ID, ImageEntity.TABLE_COLUMN_IMAGE_LOCAL_NAME}, ImageEntity.TABLE_COLUMN_ID + "=?", new String[]{imageId + ""}, null, null, null);
         while (cursor.moveToNext()) {
             String string = cursor.getString(cursor.getColumnIndex(ImageEntity.TABLE_COLUMN_IMAGE_LOCAL_NAME));
             return string;
@@ -30,7 +30,7 @@ public class ImageDao {
     public long add(ImageEntity imageEntity) {
         ContentValues contentValues = new ContentValues();
 //        contentValues.put(ImageEntity.TABLE_COLUMN_ID, imageEntity.getRemoteId());
-        contentValues.put(ImageEntity.TABLE_COLUMN_IMAGE_ID, imageEntity.getRemoteImageId());
+        contentValues.put(ImageEntity.TABLE_COLUMN_REMOTE_IMAGE_ID, imageEntity.getRemoteImageId());
         contentValues.put(ImageEntity.TABLE_COLUMN_IMAGE_LOCAL_NAME, imageEntity.getImageLocalName());
         long insert = database.insert(ImageEntity.TABLE_NAME, null, contentValues);
         return insert;

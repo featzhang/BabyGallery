@@ -114,4 +114,30 @@ public class MessageData implements Serializable {
     public void setMarkPoint(Timestamp markPoint) {
         this.markPoint = markPoint;
     }
+
+    @Override
+    public String toString() {
+        return "MessageData{" +
+                "id=" + id +
+                ", remoteId=" + remoteId +
+                ", userId=" + userId +
+                ", tag='" + tag + '\'' +
+                ", imageIds='" + imageIds + '\'' +
+                ", updateTime=" + updateTime +
+                ", content='" + content + '\'' +
+                ", markPoint=" + markPoint +
+                '}';
+    }
+
+    public RemoteMessageEntity toRemoteEntity() {
+        RemoteMessageEntity remoteMessageEntity = new RemoteMessageEntity();
+        remoteMessageEntity.setContent(content);
+        remoteMessageEntity.setId(remoteId);
+        remoteMessageEntity.setImageIds(imageIds);
+        remoteMessageEntity.setMarkPoint(markPoint);
+        remoteMessageEntity.setTag(tag);
+        remoteMessageEntity.setUploadDate(updateTime);
+        remoteMessageEntity.setUserId(userId);
+        return remoteMessageEntity;
+    }
 }
