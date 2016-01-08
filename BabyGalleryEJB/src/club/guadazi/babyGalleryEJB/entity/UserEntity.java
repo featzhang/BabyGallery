@@ -1,5 +1,7 @@
 package club.guadazi.babyGalleryEJB.entity;
 
+import org.apache.struts2.json.annotations.JSON;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -67,6 +69,7 @@ public class UserEntity {
     }
 
     @Basic
+    @JSON(format="yyyy-MM-dd HH:mm:ss")
     @Column(name = "baby_birthday")
     public Timestamp getBabyBirthday() {
         return babyBirthday;

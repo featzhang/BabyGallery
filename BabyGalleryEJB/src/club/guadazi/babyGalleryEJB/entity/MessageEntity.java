@@ -1,5 +1,7 @@
 package club.guadazi.babyGalleryEJB.entity;
 
+import org.apache.struts2.json.annotations.JSON;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -60,6 +62,7 @@ public class MessageEntity {
     }
 
     @Basic
+    @JSON(format="yyyy-MM-dd HH:mm:ss")
     @Column(name = "update_time")
     public Timestamp getUpdateTime() {
         return updateTime;
@@ -90,6 +93,7 @@ public class MessageEntity {
     }
 
     @Basic
+    @JSON(format="yyyy-MM-dd HH:mm:ss")
     @Column(name = "mark_point")
     public Timestamp getMarkPoint() {
         return markPoint;
