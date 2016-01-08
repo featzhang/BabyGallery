@@ -5,9 +5,9 @@
     <color name="colorAccent">#FF4081</color>
     <color name="message_list_content_bgc">#1bff4081</color>
     <color name="message_list_content_title_c">#0751e4</color>
-    <color name="message_list_content_comment_bgc">#07e416</color>
-    <color name="message_list_content_praise_bgc">#66dc1c1c</color>
-    <color name="message_list_content_comment_count_color">#770675e6</color>
+    <color name="message_list_content_comment_bgc">#1ba9bfaa</color>
+    <color name="message_list_content_praise_bgc">#66ece1e1</color>
+    <color name="message_list_content_comment_count_color">#060606</color>
     <color name="new_message_iv_bg">#d9d9d1</color>
     <color name="message_item_content_color">#000000</color>
     <color name="main_activity_background">#fff</color>
