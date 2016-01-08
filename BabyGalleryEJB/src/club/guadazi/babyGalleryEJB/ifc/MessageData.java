@@ -1,6 +1,7 @@
 package club.guadazi.babyGalleryEJB.ifc;
 
 import club.guadazi.babyGalleryEJB.entity.MessageEntity;
+import org.apache.struts2.json.annotations.JSON;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -79,7 +80,7 @@ public class MessageData implements Serializable {
     public void setContent(String content) {
         this.content = content;
     }
-
+    @JSON(format="yyyy-MM-dd HH:mm:ss")
     public Timestamp getMarkPoint() {
         return markPoint;
     }
@@ -114,7 +115,7 @@ public class MessageData implements Serializable {
                 ", markPoint=" + markPoint +
                 '}';
     }
-
+    @JSON(format="yyyy-MM-dd HH:mm:ss")
     public Timestamp getUploadDate() {
         return uploadDate;
     }

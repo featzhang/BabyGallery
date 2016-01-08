@@ -1,6 +1,7 @@
 package club.guadazi.babyGalleryEJB.ifc;
 
 import club.guadazi.babyGalleryEJB.entity.UserEntity;
+import org.apache.struts2.json.annotations.JSON;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -34,7 +35,7 @@ public class UserData implements Serializable {
     public void setPhoneCount(int phoneCount) {
         this.phoneCount = phoneCount;
     }
-
+    @JSON(format="yyyy-MM-dd HH:mm:ss")
     public Timestamp getBabyBirthday() {
         return babyBirthday;
     }

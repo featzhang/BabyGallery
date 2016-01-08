@@ -62,8 +62,8 @@ public class MessageEntity {
     }
 
     @Basic
-    @JSON(format="yyyy-MM-dd HH:mm:ss")
     @Column(name = "update_time")
+    @JSON(format="yyyy-MM-dd HH:mm:ss")
     public Timestamp getUpdateTime() {
         return updateTime;
     }
