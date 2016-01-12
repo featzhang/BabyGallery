@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="dataSourceStorage">
-  <data-source name="MySQL - BabyGallery@localhost" uuid="356128ad-f1df-4a77-8dd2-fe5d889308fe">
-    <database-info product="MySQL" version="5.7.10" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.25 ( Revision: ${bzr.revision-id} )">
+  <data-source name="MySQL - BabyGallery@172.28.10.189" uuid="cf2c2e2a-71b5-4f46-b80d-b6cc5906cc98">
+    <database-info product="MySQL" version="5.5.19-log" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.25 ( Revision: ${bzr.revision-id} )">
       <extra-name-characters>#@</extra-name-characters>
       <identifier-quote-string>`</identifier-quote-string>
     </database-info>
-    <case-sensitivity plain-identifiers="mixed" quoted-identifiers="upper"/>
+    <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact"/>
     <schema name="" catalog="BabyGallery"/>
     <table name="t_comment" schema="" catalog="BabyGallery" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
@@ -14,6 +14,12 @@
       <column name="view_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
     </table>
+    <table name="t_image" schema="" catalog="BabyGallery" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="image_name" sqlType="VARCHAR" precision="30" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <index name="unique_id" unique="true" columns="id"/>
+    </table>
     <table name="t_message" schema="" catalog="BabyGallery" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="image_ids" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
@@ -21,7 +27,7 @@
       <column name="update_time" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
       <column name="tag" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
       <column name="title" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
-      <column name="content" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
+      <column name="content" sqlType="VARCHAR" precision="450" scale="0" nullable="true" jdbcType="12"/>
       <column name="mark_point" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="id"/>
     </table>

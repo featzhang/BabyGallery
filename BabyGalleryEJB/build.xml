@@ -5,9 +5,9 @@
     <property name="build" value="build"/>
     <property name="build.class" value="build"/>
     <property name="dest" value="dest"/>
-    <property name="jboss-dir" value="\Users\Mariaaron\devkit\jboss-eap-6.3\standalone\deployments\BabyGallery.ear"/>
-    <property name="3rd.lib" value="\Users\Mariaaron\kuaiPan\快盘\tools\java\basicLib"/>
-    <property name="common.lib" value="..\BabyGallery\common\lib"/>
+    <property name="jboss-dir" value="..\..\jboss-eap-6.3\standalone\deployments\BabyGallery.ear"/>
+    <property name="3rd.lib" value="..\..\basicLib"/>
+    <property name="common.lib" value="..\BabyGalleryExtract\common\lib"/>
 
     <target name="clean">
         <delete includeEmptyDirs="true">

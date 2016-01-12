@@ -53,7 +53,19 @@ This is first page of BabyGallery.ear!<br>
 
 <a href="listMessages.action?user-id=1">查找 id=1的所有信息</a><br>
 <a href="registerNewUser.action?name=张山">注册新用户张山</a><br>
-<a href="findUser.action?user-id=1">查找id=1的用户</a><br>
+<a href="findUser.action?userId=1">查找id=1的用户</a><br>
+
+<form action="upload-images.action" method="post" enctype="multipart/form-data">
+    文件1:<input type="file" name="image"><br/>
+    文件2:<input type="file" name="image"><br/>
+    文件3:<input type="file" name="image"><br/>
+    文件4:<input type="file" name="image"><br/>
+    文件5:<input type="file" name="image"><br/>
+    文件6:<input type="file" name="image"><br/>
+    消息内容:<input type="text" name="content"><br/>
+    日期：<input type="text" name="markpoint"><br/>
+    <input type="submit" value="上传">
+</form>
 
 </body>
 </html>
