@@ -10,6 +10,9 @@ import android.graphics.drawable.Drawable;
  */
 public class ImageTool {
     public static Drawable resizeImage(Bitmap bitmap, int w, int h) {
+        if (bitmap == null) {
+            return null;
+        }
         Bitmap BitmapOrg = bitmap;
         int width = BitmapOrg.getWidth();
         int height = BitmapOrg.getHeight();

@@ -11,7 +11,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -20,6 +19,7 @@ import com.loopj.android.http.RequestParams;
 import java.util.ArrayList;
 import java.util.List;
 
+import club.guadazi.babygallery.provider.MessageIOUtil;
 import club.guadazi.babygallery.provider.entity.MessageData;
 import club.guadazi.babygallery.provider.remoteEntity.RemoteMessageEntity;
 import club.guadazi.babygallery.provider.sync.MessageManager;
@@ -72,46 +72,27 @@ public class MainActivity extends Activity {
         adapter.setMessageDatas(messageDatas);
         listView.setAdapter(adapter);
 
+
         AsyncHttpClient asyncHttpClient = new AsyncHttpClient(null);
         final RequestParams requestParams = new RequestParams();
         requestParams.put("userId", ConstantValues.getUserId(this) + "");
+
+
         asyncHttpClient.post(ConstantValues.GET_MESSAGES_BY_USER_ID, requestParams, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String response) {
                 Log.d(TAG, "response:" + response);
+                Toast.makeText(MainActivity.this,"请求成功",Toast.LENGTH_SHORT).show();
                 if (response.equals("null")) {
                     MessageManager.deleteAllLocalMessageData(MainActivity.this);
                     setAndRefreshListView(null);
                     return;
                 }
-//                Gson gson = new Gson();
-                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-//                response = response.replace("T", "");
+                Gson gson = ConstantValues.getDateFormatGson();
                 List<RemoteMessageEntity> remoteDatas = gson.fromJson(response, new TypeToken<List<RemoteMessageEntity>>() {
                 }.getType());
-
-                if (remoteDatas != null) {
-
-                    if (messageDatas != null) {
-                        messageDatas.clear();
-                        for (RemoteMessageEntity remoteData : remoteDatas) {
-                            messageDatas.add(new MessageData(remoteData));
-                            Log.d(TAG, remoteData.toString());
-                        }
-
-
-                    } else {
-                        messageDatas = new ArrayList<MessageData>();
-                        for (RemoteMessageEntity remoteData : remoteDatas) {
-                            messageDatas.add(new MessageData(remoteData));
-                        }
-                    }
-                    for (RemoteMessageEntity remoteData : remoteDatas) {
-                        Log.i(TAG, remoteData.toString());
-                    }
-                    setAndRefreshListView(messageDatas);
-                    MessageManager.updateLocalMessagesByRemote(MainActivity.this, remoteDatas);
-                }
+                messageDatas = MessageManager.updateLocalMessagesByRemote(MainActivity.this, remoteDatas);
+                setAndRefreshListView(messageDatas);
             }
 
             @Override

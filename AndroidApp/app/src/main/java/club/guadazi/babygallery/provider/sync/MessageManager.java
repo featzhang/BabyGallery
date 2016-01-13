@@ -93,10 +93,11 @@ public class MessageManager {
 
     }
 
-    public static void updateLocalMessagesByRemote(Context context, List<RemoteMessageEntity> remoteDates) {
+    public static List<MessageData> updateLocalMessagesByRemote(Context context, List<RemoteMessageEntity> remoteDates) {
         List<MessageData> localDatas = loadAllLocalMessages(context);
         List<MessageDataUpdate> dataUpdates = MessageManager.compare(remoteDates, localDatas);
         MessageManager.updateLocalMessageData(context, dataUpdates);
+        return localDatas;
     }
 
     public static void deleteAllLocalMessageData(Context context) {

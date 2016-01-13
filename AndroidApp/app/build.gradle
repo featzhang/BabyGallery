@@ -28,4 +28,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.google.code.gson:gson:2.2.4'
     compile files('libs/android-async-http-1.2.1.jar')
+    compile files('libs/apache-mime4j-core-0.7.2.jar')
 }

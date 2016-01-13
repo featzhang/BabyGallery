@@ -1,8 +1,7 @@
 package club.guadazi.babygallery.view;
 
+
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.Log;
@@ -19,11 +18,12 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import java.io.File;
-
 import club.guadazi.babygallery.R;
+import club.guadazi.babygallery.net.DownloadImageAsyncTask;
+import club.guadazi.babygallery.provider.entity.ImageEntity;
 import club.guadazi.babygallery.provider.entity.MessageData;
 import club.guadazi.babygallery.provider.sync.ImageLocalManager;
+import club.guadazi.babygallery.util.ConstantValues;
 
 public class MessageViewHolder {
     public interface MessageAction {
@@ -109,15 +109,27 @@ public class MessageViewHolder {
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
 
-            ImageView imageView = new ImageView(mContext);
+            final ImageView imageView = new ImageView(mContext);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             float dimension = mContext.getResources().getDimension(R.dimen.message_item_image_size);
             imageView.setLayoutParams(new AbsListView.LayoutParams((int) dimension, (int) dimension));
-            Drawable bitmap = ImageLocalManager.getThumbnailByImageId(mContext, imageIds[i]);
+            Drawable bitmap = ImageLocalManager.getThumbnailByRemoteImageId(mContext, imageIds[i]);
             if (bitmap != null) {
                 imageView.setImageDrawable(bitmap);
             } else {
+                Log.d(TAG, "set default image!");
                 imageView.setImageResource(R.drawable.default_image);
+
+                new DownloadImageAsyncTask(mContext) {
+
+                    @Override
+                    public void onFinish(ImageEntity imageEntity) {
+
+                        imageView.setImageDrawable(ImageLocalManager.getThumbnailByRemoteImageId(mContext, imageEntity.getRemoteImageId()));
+                    }
+
+                }.execute(ConstantValues.REQUEST_IMAGE_NIC, imageIds[i] + "", ConstantValues.getUserId(mContext) + "");
+
             }
 
             return imageView;

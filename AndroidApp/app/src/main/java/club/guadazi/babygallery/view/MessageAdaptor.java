@@ -37,7 +37,7 @@ public class MessageAdaptor extends BaseAdapter {
         if (messageDatas == null)
             return 0;
         else {
-            Log.d(TAG, "messageDatas size: " + messageDatas.size() + "");
+//            Log.d(TAG, "messageDatas size: " + messageDatas.size() + "");
             return messageDatas.size();
         }
     }

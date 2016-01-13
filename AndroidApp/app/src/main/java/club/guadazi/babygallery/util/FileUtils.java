@@ -2,12 +2,11 @@ package club.guadazi.babygallery.util;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * Created by aaron on 16-1-8.
- */
 public class FileUtils {
     /**
      * 复制单个文件
@@ -96,6 +95,23 @@ public class FileUtils {
             checkAndCreateDirectory(parentFile);
             file.mkdir();
             return false;
+        }
+    }
+
+    public static void saveToFile(InputStream inputStream, File file) {
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            byte[] bytes = new byte[1024];
+            int length = 0;
+            while ((length = inputStream.read(bytes)) > 0) {
+                fileOutputStream.write(bytes, 0, length);
+            }
+            fileOutputStream.close();
+            inputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

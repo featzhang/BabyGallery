@@ -23,9 +23,10 @@ public class ImageLocalManager {
 
     private static final String TAG = "ImageLocalManager";
 
-    public static String getImageFilePathInDB(Context context, long imageFileNameId) {
+    public static String getImageFilePathInDBByRemoteId(Context context, long imageFileNameId) {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            String imageName = new ImageDao(context).findImageName(imageFileNameId);
+            String imageName = new ImageDao(context).findImageNameByRemoteId(imageFileNameId);
+            Log.d("ImageLocalManager", ""+imageName);
             if (TextUtils.isEmpty(imageName)) {
                 return null;
             }
@@ -97,9 +98,9 @@ public class ImageLocalManager {
     }
 
 
-    public static Drawable getThumbnailByImageId(Context mContext, long imageId) {
+    public static Drawable getThumbnailByRemoteImageId(Context mContext, long imageId) {
         Log.d(TAG, "image id: " + imageId);
-        String imageFilePathInDB = getImageFilePathInDB(mContext, imageId);
+        String imageFilePathInDB = getImageFilePathInDBByRemoteId(mContext, imageId);
         Log.d(TAG, "fileName: " + imageFilePathInDB);
         if (imageFilePathInDB == null) {
             return null;

@@ -2,12 +2,10 @@ package club.guadazi.babygallery.view;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,13 +21,8 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,12 +30,10 @@ import java.util.Date;
 import java.util.List;
 
 import club.guadazi.babygallery.R;
-import club.guadazi.babygallery.provider.entity.MISSION_TYPE;
+import club.guadazi.babygallery.net.AddNewMessageAsyncTask;
 import club.guadazi.babygallery.provider.entity.MessageData;
-import club.guadazi.babygallery.provider.entity.MissionEntity;
-import club.guadazi.babygallery.provider.entity.MissionManager;
+import club.guadazi.babygallery.provider.remoteEntity.RemoteMessageEntity;
 import club.guadazi.babygallery.provider.sync.ImageLocalManager;
-import club.guadazi.babygallery.provider.sync.MessageManager;
 import club.guadazi.babygallery.util.ConstantValues;
 
 public class NewMessageActivity extends Activity {
@@ -119,62 +110,35 @@ public class NewMessageActivity extends Activity {
 
     public void submit() {
         String content = contentEditText.getText().toString();
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("正在提交...");
-        progressDialog.show();
-        final MessageData messageData = new MessageData();
+
+        MessageData messageData = new MessageData();
         messageData.setContent(content);
         messageData.setUserId(ConstantValues.getUserId(this));
         messageData.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         if (date != null)
             messageData.setMarkPoint(new Timestamp(date.getTime()));
+        List<File> files = new ArrayList<File>();
         if (images != null && images.size() > 0) {
-            List<Long> longs = ImageLocalManager.addNewImages(this, images);
-            String imageString = "";
-            for (int i = 0; i < longs.size(); i++) {
-                if (i == 0) {
-                    imageString = longs.get(i) + "";
-                } else {
-                    imageString += MessageData.IMAGE_ID_SEPERATER + longs.get(i);
-                }
+            for (String image : images) {
+                files.add(new File(image));
             }
-            messageData.setImageIds(imageString);
         }
-        Log.d(TAG, "submit data:" + messageData);
-        Gson gson = new Gson();
-        String json = gson.toJson(messageData.toRemoteEntity());
-        Log.d(TAG, "json:" + json);
-        AsyncHttpClient asyncHttpClient = new AsyncHttpClient("");
-        RequestParams requestParams = new RequestParams();
-        requestParams.put("messageDataString", json);
-        asyncHttpClient.post(this, ConstantValues.CREATE_NEW_MESSAGE, requestParams, new AsyncHttpResponseHandler() {
+        new AddNewMessageAsyncTask(this) {
+
+
             @Override
-            public void onSuccess(String s) {
-                Log.d(TAG, "response: " + s);
-                if (s != null && !s.equals("null") && TextUtils.isEmpty(s)) {
-                    int id = Integer.parseInt(s);
-                    messageData.setRemoteId(id);
-                }
-
-
-                Toast.makeText(NewMessageActivity.this, "提交成功，新的 message id 为" + s, Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
-                MessageManager.addMessageToLocalDB(NewMessageActivity.this, messageData);
-                Intent intent = new Intent();
-                intent.putExtra("message", messageData);
-                setResult(CREATE_NEW_MESSAGE_SUCCESS, intent);
+            public void onFinish(RemoteMessageEntity result) {
+                Intent intent = getIntent();
+                intent.putExtra("messageData", new MessageData(result));
+                setResult(CREATE_NEW_MESSAGE_SUCCESS);
                 finish();
             }
 
             @Override
-            public void onFailure(Throwable throwable) {
-                super.onFailure(throwable);
-                progressDialog.dismiss();
-                Toast.makeText(NewMessageActivity.this, "联网失败！", Toast.LENGTH_SHORT).show();
-                long index = MessageManager.addMessageToLocalDB(NewMessageActivity.this, messageData);
-                MissionManager.addNewMission(NewMessageActivity.this, new MissionEntity(MISSION_TYPE.ADD_MESSAGE, index + ""));
+            public void onFailed() {
+
             }
-        });
+        }.execute(ConstantValues.ADD_NEW_MESSAGE_URL, messageData.toRemoteEntity(), files);
 
     }
 
@@ -272,7 +236,6 @@ public class NewMessageActivity extends Activity {
 
             ImageView imageView = new ImageView(NewMessageActivity.this);
             float dimension = NewMessageActivity.this.getResources().getDimension(R.dimen.message_item_image_icon_size);
-            Log.d(TAG, "dimension:" + dimension);
 
             AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams((int) dimension, (int) dimension);
             imageView.setLayoutParams(layoutParams);

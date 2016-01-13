@@ -41,9 +41,11 @@ public class ImageDao {
 
     public int add(ImageData imageData) {
         ImageEntity imageEntity = imageData.toEntity();
-        em.persist(imageData);
+        em.persist(imageEntity);
         em.flush();
-        return imageEntity.getId();
+        int id = imageEntity.getId();
+        log.info("add new Image id:" + id);
+        return id;
     }
 
     public boolean update(ImageData userData) {

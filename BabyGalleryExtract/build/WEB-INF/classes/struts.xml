@@ -55,12 +55,6 @@
                 <param name="root">messageDatas</param>
             </result>
         </action>
-        <action name="addMessage" class="club.guadazi.babyGallery.MessageAction"
-                method="addMessage">
-            <result name="success" type="json">
-                <param name="root">messageId</param>
-            </result>
-        </action>
         <action name="updateMessage" class="club.guadazi.babyGallery.MessageAction"
                 method="updateMessage">
             <result name="success" type="json">
@@ -75,16 +69,26 @@
         </action>
     </package>
     <package name="new-addMessage" extends="struts-default,json-default">
-        <action name="upload-images" class="club.guadazi.babyGallery.UploadAction">
+        <action name="addMessage" class="club.guadazi.babyGallery.UploadAction">
             <interceptor-ref name="fileUpload">
-                <param name="allowedTypes">image/x-ms-bmp,image/jpeg,image/gif,image/png,image/x-png</param>
-                <param name="maximumSize">2048000</param>
+                <param name="allowedTypes">image/x-ms-bmp,image/jpeg,image/jpg,image/gif,image/png,image/x-png</param>
+                <param name="maximumSize">502557600</param>
             </interceptor-ref>
             <interceptor-ref name="defaultStack"/>
             <result type="json" name="success">
                 <param name="root">messageData</param>
             </result>
+            <result type="json" name="input">
+                <param name="root">messageData</param>
+            </result>
         </action>
     </package>
+    <constant name="struts.multipart.maxSize" value="100000000"/>
 
+    <package name="download" extends="struts-default" namespace="/">
+        <action name="download-image" class="club.guadazi.babyGallery.DownloadImageAction"
+                method="doDownload">
+
+        </action>
+    </package>
 </struts>
