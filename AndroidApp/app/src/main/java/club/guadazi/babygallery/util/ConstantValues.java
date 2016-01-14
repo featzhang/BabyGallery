@@ -20,7 +20,8 @@ public class ConstantValues {
             "/BabyGallery/deleteMessage.action";
     public static final int max_images = 8;
     public static final String ADD_NEW_MESSAGE_URL = "http://" + ipWithPort + "/BabyGallery/addMessage.action";
-    public static final String REQUEST_IMAGE_NIC = "http://" + ipWithPort + "/BabyGallery/download-image.action";
+    public static final String REQUEST_IMAGE = "http://" + ipWithPort + "/BabyGallery/download-image.action";
+    public static final String REQUEST_IMAGE_NIC = "http://" + ipWithPort + "/BabyGallery/download-image-nic.action";
 
     public static Gson getDateFormatGson() {
         return new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();

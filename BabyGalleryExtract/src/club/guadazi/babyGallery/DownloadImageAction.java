@@ -1,5 +1,6 @@
 package club.guadazi.babyGallery;
 
+import club.guadazi.babyGallery.pojo.ImageTools;
 import club.guadazi.babyGalleryEJB.ifc.ImageData;
 import club.guadazi.babyGalleryEJB.ifc.ImageIfc;
 import club.guadazi.common.EjbUtils;
@@ -18,6 +19,11 @@ public class DownloadImageAction extends ActionSupport {
     private int imageId;
     private int userId;
     private ImageIfc imageIfc = (ImageIfc) EjbUtils.getEjb(ImageIfc.class);
+    private String imageType;
+
+    public void setImageType(String imageType) {
+        this.imageType = imageType;
+    }
 
     public void doDownload() {
         log.info("doDownload");
@@ -29,6 +35,10 @@ public class DownloadImageAction extends ActionSupport {
         }
         String imageName = imageData.getImageName();
         String fileName = path + File.separator + imageName;
+        String originFileName = imageName;
+        if (imageType != null && imageType.equals("nic")) {
+            fileName = ImageTools.getNicNameOfImageFile(fileName);
+        }
         File file = new File(fileName);
         if (!file.exists()) {
             return;
@@ -63,9 +73,7 @@ public class DownloadImageAction extends ActionSupport {
                         + (fileSize - 1) + "/" + fileSize);
                 needReadLen = fileSize - Long.parseLong(startPos) + 1;
             }
-            resp.setHeader("Content-Disposition", "attachment;filename="
-                    + fileName);
-            resp.setHeader("FileName", file.getName());
+            resp.setHeader("FileName", originFileName);
             in = new BufferedInputStream(new FileInputStream(file));
             in.skip(Long.parseLong(startPos));
             bufferSize = (needReadLen > (long) bufferSize) ? bufferSize

@@ -1,8 +1,6 @@
 package club.guadazi.babygallery.net;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
 import org.apache.http.Header;
@@ -11,18 +9,14 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.DefaultedHttpParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 import club.guadazi.babygallery.provider.dao.ImageDao;
 import club.guadazi.babygallery.provider.entity.ImageEntity;
-import club.guadazi.babygallery.provider.sync.ImageLocalManager;
+import club.guadazi.babygallery.provider.sync.ImageManager;
+import club.guadazi.babygallery.util.ConstantValues;
 import club.guadazi.babygallery.util.FileUtils;
 
 public abstract class DownloadImageAsyncTask extends AsyncTask<String, Integer, ImageEntity> {
@@ -46,17 +40,15 @@ public abstract class DownloadImageAsyncTask extends AsyncTask<String, Integer, 
             HttpResponse httpResponse = httpClient.execute(httpGet);
             if (httpResponse.getStatusLine().getStatusCode() == 200) {
                 HttpEntity httpEntity = httpResponse.getEntity();
-                HttpParams params1 = httpResponse.getParams();
                 Header[] fileNames = httpResponse.getHeaders("FileName");
                 String fileName = fileNames[0].getValue();
                 InputStream inputStream = httpEntity.getContent();
-                Header contentType = httpEntity.getContentType();
 
                 imageEntity = new ImageEntity();
-                String localImageFilePath = ImageLocalManager.getLocalImageFilePath(mContext, fileName);
+                String localImageFilePath = url.equals(ConstantValues.REQUEST_IMAGE_NIC) ? ImageManager.getThumbnailPathByImageName(mContext, fileName) : ImageManager.getImagePathByImageName(mContext, fileName);
                 imageEntity.setImageLocalName(fileName);
                 imageEntity.setRemoteImageId(imageId);
-                long id = new ImageDao(mContext).add(imageEntity);
+                long id = new ImageDao(mContext).addIfNotExist(imageEntity);
                 imageEntity.setId((int) id);
                 File file = new File(localImageFilePath);
                 FileUtils.saveToFile(inputStream, file);

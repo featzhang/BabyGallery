@@ -33,7 +33,8 @@ import club.guadazi.babygallery.R;
 import club.guadazi.babygallery.net.AddNewMessageAsyncTask;
 import club.guadazi.babygallery.provider.entity.MessageData;
 import club.guadazi.babygallery.provider.remoteEntity.RemoteMessageEntity;
-import club.guadazi.babygallery.provider.sync.ImageLocalManager;
+import club.guadazi.babygallery.provider.sync.ImageManager;
+import club.guadazi.babygallery.provider.sync.MessageManager;
 import club.guadazi.babygallery.util.ConstantValues;
 
 public class NewMessageActivity extends Activity {
@@ -131,6 +132,7 @@ public class NewMessageActivity extends Activity {
                 Intent intent = getIntent();
                 intent.putExtra("messageData", new MessageData(result));
                 setResult(CREATE_NEW_MESSAGE_SUCCESS);
+                MessageManager.addMessageToLocalDB(NewMessageActivity.this,new MessageData(result));
                 finish();
             }
 
@@ -249,7 +251,7 @@ public class NewMessageActivity extends Activity {
                     }
                 });
             } else {
-                Drawable thumbnailByImagePath = ImageLocalManager.getThumbnailByImagePath(NewMessageActivity.this, images.get(i));
+                Drawable thumbnailByImagePath = ImageManager.getThumbnailByThumbnailPath(NewMessageActivity.this, images.get(i));
                 imageView.setImageDrawable(thumbnailByImagePath);
             }
             return imageView;

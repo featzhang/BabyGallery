@@ -22,7 +22,7 @@ import club.guadazi.babygallery.R;
 import club.guadazi.babygallery.net.DownloadImageAsyncTask;
 import club.guadazi.babygallery.provider.entity.ImageEntity;
 import club.guadazi.babygallery.provider.entity.MessageData;
-import club.guadazi.babygallery.provider.sync.ImageLocalManager;
+import club.guadazi.babygallery.provider.sync.ImageManager;
 import club.guadazi.babygallery.util.ConstantValues;
 
 public class MessageViewHolder {
@@ -113,7 +113,12 @@ public class MessageViewHolder {
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             float dimension = mContext.getResources().getDimension(R.dimen.message_item_image_size);
             imageView.setLayoutParams(new AbsListView.LayoutParams((int) dimension, (int) dimension));
-            Drawable bitmap = ImageLocalManager.getThumbnailByRemoteImageId(mContext, imageIds[i]);
+            String thumbPath = ImageManager.getThumbnailPathByRemoteId(mContext, imageIds[i]);
+            Drawable bitmap = ImageManager.getThumbnailByThumbnailPath(mContext, thumbPath);
+
+//            Drawable bitmap = ImageManager.getThumbnailByRemoteId(mContext, imageIds[i]);
+            Log.d(TAG, "MessageViewHolder show ");
+
             if (bitmap != null) {
                 imageView.setImageDrawable(bitmap);
             } else {
@@ -125,7 +130,7 @@ public class MessageViewHolder {
                     @Override
                     public void onFinish(ImageEntity imageEntity) {
 
-                        imageView.setImageDrawable(ImageLocalManager.getThumbnailByRemoteImageId(mContext, imageEntity.getRemoteImageId()));
+                        imageView.setImageDrawable(ImageManager.getThumbnailByRemoteId(mContext, imageEntity.getRemoteImageId()));
                     }
 
                 }.execute(ConstantValues.REQUEST_IMAGE_NIC, imageIds[i] + "", ConstantValues.getUserId(mContext) + "");

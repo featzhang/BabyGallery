@@ -99,6 +99,7 @@ public class FileUtils {
     }
 
     public static void saveToFile(InputStream inputStream, File file) {
+        checkAndCreateDirectory(file.getParentFile());
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             byte[] bytes = new byte[1024];

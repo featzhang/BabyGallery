@@ -1,5 +1,6 @@
 package club.guadazi.babyGallery;
 
+import club.guadazi.babyGallery.pojo.ImageTools;
 import club.guadazi.babyGalleryEJB.ifc.ImageData;
 import club.guadazi.babyGalleryEJB.ifc.ImageIfc;
 import club.guadazi.babyGalleryEJB.ifc.MessageData;
@@ -51,7 +52,7 @@ public class UploadAction extends ActionSupport {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
         messageData = gson.fromJson(messageDataString, MessageData.class);
         Integer userId = messageData.getUserId();
-        ArrayList<File> file = new ArrayList<>();
+        final ArrayList<File> file = new ArrayList<>();
 
         if (file1 != null) {
             file.add(file1);
@@ -78,18 +79,20 @@ public class UploadAction extends ActionSupport {
             for (int i = 0; i < file.size(); i++) {
                 long currentTimeMillis = System.currentTimeMillis();
                 String tempFileName = currentTimeMillis + "_" + userId;
-                String fileName = fileNameList[i];
-                String fileNamePrefix = fileName.substring(fileName.lastIndexOf("."));
+                String clientFileName = fileNameList[i];
+                String fileNamePrefix = clientFileName.substring(clientFileName.lastIndexOf("."));
                 tempFileName += fileNamePrefix;
                 ImageData imageData = new ImageData();
                 imageData.setImageName(tempFileName);
                 int imageId = imageIfc.add(imageData);
-                log.info("file name: " + fileName + " id: " + imageId);
+                log.info("file name: " + clientFileName + " id: " + imageId);
 
                 String imageSavePath = "/Users/Mariaaron/temp";
-                InputStream is = new FileInputStream(file.get(i));
+                final File file7 = file.get(i);
+                InputStream is = new FileInputStream(file7);
                 // 创建输出流，生成新文件
-                OutputStream os = new FileOutputStream(new File(imageSavePath + File.separator + tempFileName));
+                final String destFilePath = imageSavePath + File.separator + tempFileName;
+                OutputStream os = new FileOutputStream(new File(destFilePath));
                 // 将InputStream里的byte拷贝到OutputStream
                 IOUtils.copy(is, os);
                 os.flush();
@@ -97,6 +100,13 @@ public class UploadAction extends ActionSupport {
                 IOUtils.closeQuietly(os);
 
                 fileIds.add("" + imageId);
+
+                new Thread() {
+                    @Override
+                    public void run() {
+                        ImageTools.zoomInImageFile(destFilePath, ImageTools.getNicNameOfImageFile(destFilePath));
+                    }
+                }.start();
             }
             if (fileIds.size() > 0) {
                 String fileIdString = "";

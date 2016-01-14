@@ -56,8 +56,8 @@ public class MainActivity extends Activity {
 //                        super.onFinish();
                         Toast.makeText(MainActivity.this, "已删除！", Toast.LENGTH_SHORT).show();
                         int index = MessageManager.deleteLocalMessageById(MainActivity.this, message.getId());
-                        messageDatas = MessageManager.loadAllLocalMessages(MainActivity.this);
-                        setAndRefreshListView(messageDatas);
+                        List<MessageData> newDatas = MessageManager.loadAllLocalMessages(MainActivity.this);
+                        setAndRefreshListView(newDatas);
                     }
 
                     @Override
@@ -82,7 +82,7 @@ public class MainActivity extends Activity {
             @Override
             public void onSuccess(String response) {
                 Log.d(TAG, "response:" + response);
-                Toast.makeText(MainActivity.this,"请求成功",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "请求成功", Toast.LENGTH_SHORT).show();
                 if (response.equals("null")) {
                     MessageManager.deleteAllLocalMessageData(MainActivity.this);
                     setAndRefreshListView(null);
@@ -91,13 +91,12 @@ public class MainActivity extends Activity {
                 Gson gson = ConstantValues.getDateFormatGson();
                 List<RemoteMessageEntity> remoteDatas = gson.fromJson(response, new TypeToken<List<RemoteMessageEntity>>() {
                 }.getType());
-                messageDatas = MessageManager.updateLocalMessagesByRemote(MainActivity.this, remoteDatas);
-                setAndRefreshListView(messageDatas);
+                List<MessageData> newDatas = MessageManager.updateLocalMessagesByRemote(MainActivity.this, remoteDatas);
+                setAndRefreshListView(newDatas);
             }
 
             @Override
             public void onFailure(Throwable throwable) {
-//                super.onFailure(throwable);
                 Log.e(TAG, "connect internet failure!");
                 Toast.makeText(MainActivity.this, "联网失败!", Toast.LENGTH_SHORT).show();
             }
@@ -105,7 +104,11 @@ public class MainActivity extends Activity {
 
     }
 
-    private void setAndRefreshListView(List<MessageData> messageDatas) {
+    private void setAndRefreshListView(List<MessageData> newDatas) {
+        if (messageDatas.size() > 0) {
+            messageDatas.clear();
+        }
+        messageDatas.addAll(newDatas);
         MessageAdaptor adapter = (MessageAdaptor) listView.getAdapter();
         adapter.setMessageDatas(messageDatas);
         adapter.notifyDataSetChanged();
@@ -134,8 +137,8 @@ public class MainActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (resultCode) {
             case NewMessageActivity.CREATE_NEW_MESSAGE_SUCCESS:
-                messageDatas = MessageManager.loadAllLocalMessages(this);
-                setAndRefreshListView(messageDatas);
+                List<MessageData> newMessageDatas = MessageManager.loadAllLocalMessages(this);
+                setAndRefreshListView(newMessageDatas);
                 break;
         }
     }
