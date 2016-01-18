@@ -1,5 +1,4 @@
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">2dp</dimen>
     <dimen name="activity_vertical_margin">2dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
@@ -9,4 +8,9 @@
     <dimen name="message_item_image_size">100dp</dimen>
     <dimen name="popup_menu_width">100dp</dimen>
     <dimen name="popup_menu_height">100dp</dimen>
+    <dimen name="shadow_width">10dp</dimen>
+    <dimen name="sliding_menu_shadow_width">2dp</dimen>
+    <dimen name="slidingmenu_offset">50dp</dimen>
+    <dimen name="user_name_text_size">25sp</dimen>
+    <dimen name="sliding_menu_behind_width">10dp</dimen>
 </resources>

@@ -26,7 +26,7 @@ public class DownloadImageAction extends ActionSupport {
     }
 
     public void doDownload() {
-        log.info("doDownload");
+        log.info("doDownload: request download image id=" + imageId);
         String path = "/Users/Mariaaron/temp";
         ImageData imageData = imageIfc.findById(imageId);
         if (imageData == null) {
@@ -43,7 +43,7 @@ public class DownloadImageAction extends ActionSupport {
         if (!file.exists()) {
             return;
         }
-
+        log.info("image file name is " + fileName);
         HttpServletResponse resp = ServletActionContext.getResponse();
         HttpServletRequest request = ServletActionContext.getRequest();
         String range = request.getHeader("Range");
@@ -93,7 +93,7 @@ public class DownloadImageAction extends ActionSupport {
                         : (int) needReadLen;
             }
             resp.flushBuffer();
-
+            log.info("download complete");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -112,7 +112,6 @@ public class DownloadImageAction extends ActionSupport {
     }
 
     public void setImageId(int imageId) {
-        log.info("set image id" + imageId);
         this.imageId = imageId;
     }
 

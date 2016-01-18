@@ -1,12 +1,14 @@
 package club.guadazi.babygallery.provider.entity;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.sql.Timestamp;
 
 import club.guadazi.babygallery.provider.remoteEntity.RemoteMessageEntity;
 
 
-public class MessageData implements Serializable {
+public class MessageData implements Parcelable {
 
     private int id;
     private int remoteId;
@@ -50,6 +52,26 @@ public class MessageData implements Serializable {
         content = remoteData.getContent();
         markPoint = remoteData.getMarkPoint();
     }
+
+    protected MessageData(Parcel in) {
+        id = in.readInt();
+        remoteId = in.readInt();
+        tag = in.readString();
+        imageIds = in.readString();
+        content = in.readString();
+    }
+
+    public static final Creator<MessageData> CREATOR = new Creator<MessageData>() {
+        @Override
+        public MessageData createFromParcel(Parcel in) {
+            return new MessageData(in);
+        }
+
+        @Override
+        public MessageData[] newArray(int size) {
+            return new MessageData[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -139,5 +161,19 @@ public class MessageData implements Serializable {
         remoteMessageEntity.setUploadDate(updateTime);
         remoteMessageEntity.setUserId(userId);
         return remoteMessageEntity;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeInt(remoteId);
+        dest.writeString(tag);
+        dest.writeString(imageIds);
+        dest.writeString(content);
     }
 }

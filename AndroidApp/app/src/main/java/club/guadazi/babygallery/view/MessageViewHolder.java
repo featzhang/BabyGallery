@@ -2,7 +2,7 @@ package club.guadazi.babygallery.view;
 
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -19,11 +19,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import club.guadazi.babygallery.R;
-import club.guadazi.babygallery.net.DownloadImageAsyncTask;
-import club.guadazi.babygallery.provider.entity.ImageEntity;
+import club.guadazi.babygallery.provider.backmission.ImageManager;
 import club.guadazi.babygallery.provider.entity.MessageData;
-import club.guadazi.babygallery.provider.sync.ImageManager;
-import club.guadazi.babygallery.util.ConstantValues;
 
 public class MessageViewHolder {
     public interface MessageAction {
@@ -107,36 +104,25 @@ public class MessageViewHolder {
         }
 
         @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
+        public View getView(final int i, View view, ViewGroup viewGroup) {
 
             final ImageView imageView = new ImageView(mContext);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             float dimension = mContext.getResources().getDimension(R.dimen.message_item_image_size);
             imageView.setLayoutParams(new AbsListView.LayoutParams((int) dimension, (int) dimension));
-            String thumbPath = ImageManager.getThumbnailPathByRemoteId(mContext, imageIds[i]);
-            Drawable bitmap = ImageManager.getThumbnailByThumbnailPath(mContext, thumbPath);
+            imageView.setImageResource(R.drawable.default_image);
 
-//            Drawable bitmap = ImageManager.getThumbnailByRemoteId(mContext, imageIds[i]);
-            Log.d(TAG, "MessageViewHolder show ");
-
-            if (bitmap != null) {
-                imageView.setImageDrawable(bitmap);
-            } else {
-                Log.d(TAG, "set default image!");
-                imageView.setImageResource(R.drawable.default_image);
-
-                new DownloadImageAsyncTask(mContext) {
-
-                    @Override
-                    public void onFinish(ImageEntity imageEntity) {
-
-                        imageView.setImageDrawable(ImageManager.getThumbnailByRemoteId(mContext, imageEntity.getRemoteImageId()));
-                    }
-
-                }.execute(ConstantValues.REQUEST_IMAGE_NIC, imageIds[i] + "", ConstantValues.getUserId(mContext) + "");
-
-            }
-
+            ImageManager.setThumbnail(mContext, (int) imageIds[i], imageView);
+            imageView.setClickable(true);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, ShowImageDetailActivity.class);
+                    intent.putExtra("message", message);
+                    intent.putExtra("selectImageIndex", i);
+                    mContext.startActivity(intent);
+                }
+            });
             return imageView;
         }
     }

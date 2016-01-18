@@ -1,1 +1,3 @@
-include ':app'
+include ':app', ':library', ':actionbarsherlock'
+project(':library').projectDir = new File('SlidingMenu-master/library')
+project(':actionbarsherlock').projectDir = new File('ActionBarSherlock-master/actionbarsherlock')

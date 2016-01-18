@@ -15,7 +15,7 @@ public class ImageDao {
 
     public ImageDao(Context context) {
         this.mContext = context;
-        BabyGallerySqliteOpenHelper openHelper = new BabyGallerySqliteOpenHelper(mContext);
+        BabyGallerySqliteOpenHelper openHelper = BabyGallerySqliteOpenHelper.getInstance(mContext);
         database =
                 openHelper.getWritableDatabase();
     }

@@ -33,7 +33,7 @@ import club.guadazi.babygallery.R;
 import club.guadazi.babygallery.net.AddNewMessageAsyncTask;
 import club.guadazi.babygallery.provider.entity.MessageData;
 import club.guadazi.babygallery.provider.remoteEntity.RemoteMessageEntity;
-import club.guadazi.babygallery.provider.sync.ImageManager;
+import club.guadazi.babygallery.provider.sync.ImageFileManager;
 import club.guadazi.babygallery.provider.sync.MessageManager;
 import club.guadazi.babygallery.util.ConstantValues;
 
@@ -251,7 +251,7 @@ public class NewMessageActivity extends Activity {
                     }
                 });
             } else {
-                Drawable thumbnailByImagePath = ImageManager.getThumbnailByThumbnailPath(NewMessageActivity.this, images.get(i));
+                Drawable thumbnailByImagePath = ImageFileManager.getThumbnailByThumbnailPath(NewMessageActivity.this, images.get(i));
                 imageView.setImageDrawable(thumbnailByImagePath);
             }
             return imageView;

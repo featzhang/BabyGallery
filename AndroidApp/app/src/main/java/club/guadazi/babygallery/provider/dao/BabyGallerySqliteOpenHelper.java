@@ -13,13 +13,21 @@ public class BabyGallerySqliteOpenHelper extends SQLiteOpenHelper {
     private static String databaseName = "babyG.db";
     private static int lastestVersion = 1;
 
-    public BabyGallerySqliteOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    private BabyGallerySqliteOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 
-    public BabyGallerySqliteOpenHelper(Context context) {
+    private BabyGallerySqliteOpenHelper(Context context) {
         super(context, databaseName, null, lastestVersion);
+    }
 
+    private static BabyGallerySqliteOpenHelper instance = null;
+
+    public static BabyGallerySqliteOpenHelper getInstance(Context context) {
+        if (instance == null) {
+            instance = new BabyGallerySqliteOpenHelper(context);
+        }
+        return instance;
     }
 
     @Override

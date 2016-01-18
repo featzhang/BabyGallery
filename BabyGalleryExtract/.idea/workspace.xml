@@ -43,39 +43,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="UploadAction.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/club/guadazi/babyGallery/UploadAction.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="89" column="36" selection-start-line="89" selection-start-column="23" selection-end-line="89" selection-end-column="36" />
-              <folding>
-                <element signature="e#3812#4050#0" expanded="true" />
-                <element signature="e#4049#4050#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DownloadImageAction.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="DownloadImageAction.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/club/guadazi/babyGallery/DownloadImageAction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="55" column="9" selection-start-line="55" selection-start-column="9" selection-end-line="55" selection-end-column="9" />
+            <state vertical-scroll-proportion="0.9284732">
+              <caret line="58" column="32" selection-start-line="58" selection-start-column="32" selection-end-line="58" selection-end-column="32" />
               <folding>
-                <element signature="e#888#889#0" expanded="true" />
-                <element signature="e#930#931#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ImageTools.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/club/guadazi/babyGallery/pojo/ImageTools.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.47455296">
-              <caret line="33" column="54" selection-start-line="33" selection-start-column="54" selection-end-line="33" selection-end-column="54" />
-              <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#4372#4373#0" expanded="true" />
+                <element signature="e#4410#4411#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -111,7 +86,6 @@
         <option value="$PROJECT_DIR$/../BabyGalleryEJB/src/club/guadazi/babyGalleryEJB/ifc/MessageIfc.java" />
         <option value="$PROJECT_DIR$/../BabyGalleryEJB/src/club/guadazi/babyGalleryEJB/ejb/MessageEJB.java" />
         <option value="$PROJECT_DIR$/../BabyGalleryEJB/src/club/guadazi/babyGalleryEJB/dao/MessageDao.java" />
-        <option value="$PROJECT_DIR$/src/club/guadazi/babyGallery/MessageAction.java" />
         <option value="$PROJECT_DIR$/../BabyGalleryEJB/src/club/guadazi/babyGalleryEJB/entity/MessageEntity.java" />
         <option value="$PROJECT_DIR$/../BabyGalleryEJB/src/club/guadazi/babyGalleryEJB/entity/UserEntity.java" />
         <option value="$PROJECT_DIR$/web/index.jsp" />
@@ -126,8 +100,9 @@
         <option value="$PROJECT_DIR$/../BabyGalleryEJB/src/club/guadazi/babyGalleryEJB/entity/ImageEntity.java" />
         <option value="$PROJECT_DIR$/src/struts.xml" />
         <option value="$PROJECT_DIR$/src/club/guadazi/babyGallery/UploadAction.java" />
-        <option value="$PROJECT_DIR$/src/club/guadazi/babyGallery/DownloadImageAction.java" />
         <option value="$PROJECT_DIR$/src/club/guadazi/babyGallery/pojo/ImageTools.java" />
+        <option value="$PROJECT_DIR$/src/club/guadazi/babyGallery/MessageAction.java" />
+        <option value="$PROJECT_DIR$/src/club/guadazi/babyGallery/DownloadImageAction.java" />
       </list>
     </option>
   </component>
@@ -175,8 +150,9 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -367,7 +343,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -940,13 +915,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/club/guadazi/babyGallery/MessageAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="32" column="55" selection-start-line="32" selection-start-column="55" selection-end-line="32" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../BabyGalleryEJB/sql/all_sql.sql">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.8046768">
@@ -1012,34 +980,42 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/club/guadazi/babyGallery/pojo/ImageTools.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.16506189">
+          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/club/guadazi/babyGallery/UploadAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="89" column="36" selection-start-line="89" selection-start-column="23" selection-end-line="89" selection-end-column="36" />
+        <state vertical-scroll-proportion="0.47455296">
+          <caret line="101" column="42" selection-start-line="101" selection-start-column="42" selection-end-line="101" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/club/guadazi/babyGallery/MessageAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.27647868">
+          <caret line="51" column="51" selection-start-line="51" selection-start-column="51" selection-end-line="51" selection-end-column="51" />
           <folding>
-            <element signature="e#3812#4050#0" expanded="true" />
-            <element signature="e#4049#4050#0" expanded="true" />
+            <element signature="e#2642#2643#0" expanded="true" />
+            <element signature="e#2684#2685#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/club/guadazi/babyGallery/DownloadImageAction.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="55" column="9" selection-start-line="55" selection-start-column="9" selection-end-line="55" selection-end-column="9" />
+        <state vertical-scroll-proportion="0.9284732">
+          <caret line="58" column="32" selection-start-line="58" selection-start-column="32" selection-end-line="58" selection-end-column="32" />
           <folding>
-            <element signature="e#888#889#0" expanded="true" />
-            <element signature="e#930#931#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/club/guadazi/babyGallery/pojo/ImageTools.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.47455296">
-          <caret line="33" column="54" selection-start-line="33" selection-start-column="54" selection-end-line="33" selection-end-column="54" />
-          <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#4372#4373#0" expanded="true" />
+            <element signature="e#4410#4411#0" expanded="true" />
           </folding>
         </state>
       </provider>

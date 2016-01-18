@@ -3,5 +3,6 @@
         android:id="@+id/menu_main_add_message"
         android:orderInCategory="100"
         android:showAsAction="always"
-        android:title="@string/add_message" />
+        android:title="@string/add_message"
+        android:icon="@drawable/add"/>
 </menu>

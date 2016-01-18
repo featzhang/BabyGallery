@@ -26,15 +26,12 @@ public class MessageAction extends ActionSupport {
     }
 
     public String listMessages() {
-        log.info("user id : " + userId);
         if (userId != -1) {
             messageDatas = messageIfc.getMessageByUserId(userId);
             if (messageDatas != null) {
-                for (MessageData data : messageDatas) {
-                    log.info(data);
-                }
+                log.info("user id : " + userId + " 请求 Message 列表！已请求到，数量为: " + messageDatas.size());
             } else {
-                log.error("can not find messages of user with id " + userId);
+                log.error("user id : " + userId + " 请求 Message 列表！未能找到");
             }
         }
         return SUCCESS;
@@ -46,13 +43,13 @@ public class MessageAction extends ActionSupport {
     }
 
     public String addMessage() {
-        log.info("addMessage" + messageDataString);
         if (StringUtils.isNotEmpty(messageDataString)) {
             Gson gson = new Gson();
             messageData = gson.fromJson(messageDataString, MessageData.class);
-//            messageData = JSON.parseObject(messageDataString, MessageData.class);
             messageId = messageIfc.addNewMessage(messageData);
-            log.info("messageId:" + messageId);
+            log.info("addMessage" + messageDataString + " messageId:" + messageId);
+        } else {
+            log.error("addMessage message is empty!");
         }
         return SUCCESS;
     }

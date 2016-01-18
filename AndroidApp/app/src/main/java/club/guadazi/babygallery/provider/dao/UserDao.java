@@ -16,7 +16,7 @@ public class UserDao {
 
     public UserDao(Context context) {
         this.mContext = context;
-        openHelper = new BabyGallerySqliteOpenHelper(context);
+        openHelper = BabyGallerySqliteOpenHelper.getInstance(context);
         database = openHelper.getWritableDatabase();
     }
 
@@ -39,6 +39,8 @@ public class UserDao {
             userData.setEmail(email);
             userData.setName(userName);
             userData.setPhotoCount(photoCount);
+            cursor.close();
+            database.close();
             return userData;
         }
         return null;

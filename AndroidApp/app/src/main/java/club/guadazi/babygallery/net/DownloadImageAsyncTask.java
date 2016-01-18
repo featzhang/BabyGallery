@@ -15,7 +15,7 @@ import java.io.InputStream;
 
 import club.guadazi.babygallery.provider.dao.ImageDao;
 import club.guadazi.babygallery.provider.entity.ImageEntity;
-import club.guadazi.babygallery.provider.sync.ImageManager;
+import club.guadazi.babygallery.provider.sync.ImageFileManager;
 import club.guadazi.babygallery.util.ConstantValues;
 import club.guadazi.babygallery.util.FileUtils;
 
@@ -45,7 +45,7 @@ public abstract class DownloadImageAsyncTask extends AsyncTask<String, Integer, 
                 InputStream inputStream = httpEntity.getContent();
 
                 imageEntity = new ImageEntity();
-                String localImageFilePath = url.equals(ConstantValues.REQUEST_IMAGE_NIC) ? ImageManager.getThumbnailPathByImageName(mContext, fileName) : ImageManager.getImagePathByImageName(mContext, fileName);
+                String localImageFilePath = url.equals(ConstantValues.REQUEST_IMAGE_NIC) ? ImageFileManager.getThumbnailFilePath(mContext, fileName) : ImageFileManager.getImagePathByImageName(mContext, fileName);
                 imageEntity.setImageLocalName(fileName);
                 imageEntity.setRemoteImageId(imageId);
                 long id = new ImageDao(mContext).addIfNotExist(imageEntity);
