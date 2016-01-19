@@ -30,6 +30,7 @@ public class ImageTool {
         // matrix.postRotate(45);
         Bitmap resizedBitmap = Bitmap.createBitmap(BitmapOrg, 0, 0, width,
                 height, matrix, true);
+        bitmap = null;
         return new BitmapDrawable(resizedBitmap);
     }
 }

@@ -150,6 +150,9 @@ public class MainActivity extends SlidingFragmentActivity {
     }
 
     private void setAndRefreshListView(List<MessageData> newDatas) {
+        if (messageDatas == null) {
+            return;
+        }
         if (messageDatas.size() > 0) {
             messageDatas.clear();
         }

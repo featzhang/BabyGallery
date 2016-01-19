@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:numColumns="2"></GridView>
+            android:numColumns="4"></GridView>
 
         <TextView
             android:id="@+id/message_list_content_content"

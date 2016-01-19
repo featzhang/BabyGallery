@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import java.io.File;
@@ -18,11 +19,6 @@ public class ImageFileManager {
 
     private static final String TAG = "ImageFileManager";
 
-    /**
-     * @param context
-     * @param imageFileNameId image file remote id
-     * @return
-     */
     public static String getImageFilePath(Context context, long imageFileNameId) {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             String imageName = new ImageDao(context).findImageNameByRemoteId(imageFileNameId);
@@ -56,8 +52,7 @@ public class ImageFileManager {
 
     public static String getThumbnailFilePath(Context mContext, String imageName) {
         String imagePath = getImagePathByImageName(mContext, imageName);
-        String thumbnailPath = getThumbnailNameByImageName(imagePath);
-        return thumbnailPath;
+        return getThumbnailNameByImageName(imagePath);
     }
 
     public static String getThumbnailFilePath(Context mContext, long imageId) {
@@ -96,8 +91,26 @@ public class ImageFileManager {
         float dimension = mContext.getResources().getDimension(R.dimen.message_item_image_icon_size);
         Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
 
-        Drawable drawable = ImageTool.resizeImage(bitmap, (int) dimension, (int) dimension);
-        return drawable;
+        return ImageTool.resizeImage(bitmap, (int) dimension, (int) dimension);
     }
 
+    public static Drawable getImageDrawable(Context mContext, int imageId) {
+        String imageFilePathInDB = getImageFilePath(mContext, imageId);
+        if (imageFilePathInDB == null) {
+            return null;
+        }
+        Log.d(TAG, "image id: " + imageId + " fileName: " + imageFilePathInDB);
+        if (!new File(imageFilePathInDB).exists()) {
+            Log.d(TAG, "file not exist!");
+            return null;
+        }
+
+        DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
+
+        Bitmap bitmap = BitmapFactory.decodeFile(imageFilePathInDB);
+
+        Drawable drawable = ImageTool.resizeImage(bitmap, displayMetrics.widthPixels, displayMetrics.heightPixels);
+        bitmap = null;
+        return drawable;
+    }
 }

@@ -3,15 +3,13 @@ package club.guadazi.babygallery.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageSwitcher;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ViewFlipper;
 
 import club.guadazi.babygallery.R;
@@ -21,66 +19,113 @@ import club.guadazi.babygallery.provider.entity.MessageData;
 public class ShowImageDetailActivity extends Activity {
 
     private static final String TAG = "ShowImageDetailActivity";
-    private ImageSwitcher viewPager;
-    private ImageView processingImageView;
+    private ViewFlipper viewFlipper;
     private MessageData message;
+    private int selectImageIndex;
+    private int[] imageIds;
+    private GestureDetector gestureDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.image_detail_layout);
-        viewPager = (ImageSwitcher) findViewById(R.id.image_detail_vp);
-//        processingImageView = (ImageView) findViewById(R.id.image_detail_processing_iv);
+        viewFlipper = (ViewFlipper) findViewById(R.id.image_detail_vp);
+
 
         getActionBar().hide();
         Intent intent = getIntent();
         if (intent == null) {
             return;
         }
+        gestureDetector = new GestureDetector(this, new MyOnGestureListener());
         message = intent.getParcelableExtra("message");
-        int imageIndex = intent.getIntExtra("selectImageIndex", 0);
+        selectImageIndex = intent.getIntExtra("selectImageIndex", 0);
         if (message != null) {
-            String imageIds = message.getImageIds();
-            if (!TextUtils.isEmpty(imageIds)) {
-                String[] strings = imageIds.split(MessageData.IMAGE_ID_SEPERATER);
-                for (String string : strings) {
-                    int imageId;
+            String messageImageIds = message.getImageIds();
+            if (!TextUtils.isEmpty(messageImageIds)) {
+                String[] imageIdStrings = messageImageIds.split(MessageData.IMAGE_ID_SEPERATER);
+                if (imageIdStrings.length > 0) {
+                    imageIds = new int[imageIdStrings.length];
+                }
+                for (int i = 0; i < imageIdStrings.length; i++) {
+                    String imageIdString = imageIdStrings[i];
                     try {
-                        imageId = Integer.parseInt(string);
+                        int i1 = Integer.parseInt(imageIdString);
+                        imageIds[i] = i1;
+                        ImageView imageView = new ImageView(this);
+                        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+
+                        ImageManager.setThumbnail(this, i1, imageView);
+                        ImageManager.setImage(this, i1, imageView);
+                        viewFlipper.addView(imageView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
+                                LinearLayout.LayoutParams.FILL_PARENT));
                     } catch (Exception e) {
-                        Log.d(TAG, "parse image id string to int error, imageId=" + string);
-                        return;
+
                     }
-                    ImageView imageView = new ImageView(this);
-                    ImageManager.setThumbnail(this, imageId, imageView);
-                    viewPager.addView(imageView);
                 }
             }
         }
-        viewPager.setSelected(true);
-//        viewPager.setCurrentItem(imageIndex);
+        viewFlipper.setSelected(true);
     }
 
-    class MyViewPagerAdapter extends BaseAdapter {
+    public class MyOnGestureListener implements GestureDetector.OnGestureListener {
 
         @Override
-        public int getCount() {
-            return 0;
+        public boolean onDown(MotionEvent e) {
+            return false;
         }
 
         @Override
-        public Object getItem(int position) {
-            return null;
+        public void onShowPress(MotionEvent e) {
+
         }
 
         @Override
-        public long getItemId(int position) {
-            return 0;
+        public boolean onSingleTapUp(MotionEvent e) {
+            return false;
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            return null;
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            return false;
         }
+
+        @Override
+        public void onLongPress(MotionEvent e) {
+
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            if (e2.getX() - e1.getX() > 120) { // 从左向右滑动（左进右出）
+                Animation rInAnim = AnimationUtils.loadAnimation(ShowImageDetailActivity.this,
+                        R.anim.push_left_in); // 向右滑动左侧进入的渐变效果（alpha 0.1 -> 1.0）
+                Animation rOutAnim = AnimationUtils.loadAnimation(ShowImageDetailActivity.this,
+                        R.anim.push_right_out); // 向右滑动右侧滑出的渐变效果（alpha 1.0 -> 0.1）
+
+                viewFlipper.setInAnimation(rInAnim);
+                viewFlipper.setOutAnimation(rOutAnim);
+                viewFlipper.showPrevious();
+                return true;
+            } else if (e2.getX() - e1.getX() < -120) { // 从右向左滑动（右进左出）
+                Animation lInAnim = AnimationUtils.loadAnimation(ShowImageDetailActivity.this,
+                        R.anim.push_left_in); // 向左滑动左侧进入的渐变效果（alpha 0.1 -> 1.0）
+                Animation lOutAnim = AnimationUtils.loadAnimation(ShowImageDetailActivity.this,
+                        R.anim.push_left_out); // 向左滑动右侧滑出的渐变效果（alpha 1.0 -> 0.1）
+
+                viewFlipper.setInAnimation(lInAnim);
+                viewFlipper.setOutAnimation(lOutAnim);
+                viewFlipper.showNext();
+                return true;
+            }
+            return true;
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        viewFlipper.stopFlipping(); // 点击事件后，停止自动播放
+        viewFlipper.setAutoStart(false);
+        return gestureDetector.onTouchEvent(event); // 注册手势事件
     }
 }

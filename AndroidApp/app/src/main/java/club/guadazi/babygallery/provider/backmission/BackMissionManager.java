@@ -8,6 +8,11 @@ import java.util.Map;
  * 主要的耗时后台任务，均记录下来，防止重复请求和请求为完成时提前获取数据
  */
 public class BackMissionManager {
+    public static MissionState requestThumbnail(int remoteId) {
+        MissionState state = getOrUpdateState(remoteId, 1, null);
+        return state;
+    }
+
     /**
      * 是否需要
      *
@@ -15,12 +20,16 @@ public class BackMissionManager {
      * @return
      */
     public static MissionState requestImage(int remoteImageId) {
-        MissionState state = getOrUpdateState(remoteImageId, null);
+        MissionState state = getOrUpdateState(remoteImageId, 0, null);
         return state;
     }
 
     public static void setImageRequestState(int remoteImageId, MissionState working) {
-        getOrUpdateState(remoteImageId, working);
+        getOrUpdateState(remoteImageId, 0, working);
+    }
+
+    public static void setThumbnailRequestState(int remoteImageId, MissionState working) {
+        getOrUpdateState(remoteImageId, 1, working);
     }
 
     enum MissionState {
@@ -36,8 +45,8 @@ public class BackMissionManager {
      * @param missionState
      * @return
      */
-    private static MissionState getOrUpdateState(int imageId, MissionState missionState) {
-        String key = "ir_" + imageId;
+    private static MissionState getOrUpdateState(int imageId, int mode, MissionState missionState) {
+        String key = "ir_" + mode + "_" + imageId;
         synchronized (map) {
 
             MissionState value = map.get(key);
