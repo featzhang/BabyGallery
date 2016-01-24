@@ -19,8 +19,9 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import club.guadazi.babygallery.R;
-import club.guadazi.babygallery.provider.backmission.ImageManager;
 import club.guadazi.babygallery.provider.entity.MessageData;
+import club.guadazi.babygallery.util.ConstantValues;
+import club.guadazi.babygallery.util.yueyueniao.ImageManager2;
 
 public class MessageViewHolder {
     public interface MessageAction {
@@ -112,12 +113,13 @@ public class MessageViewHolder {
             imageView.setLayoutParams(new AbsListView.LayoutParams((int) dimension, (int) dimension));
             imageView.setImageResource(R.drawable.default_image);
 
-            ImageManager.setThumbnail(mContext, (int) imageIds[i], imageView);
+            ImageManager2.from(mContext).displayImage(imageView, ConstantValues.getRequestImageNicUrl(mContext, (int) imageIds[i]), -1);
+//            ImageManager.setThumbnail(mContext, (int) imageIds[i], imageView);
             imageView.setClickable(true);
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext, ShowImageDetailActivity.class);
+                    Intent intent = new Intent(mContext, ShowMessageDetailActivity.class);
                     intent.putExtra("message", message);
                     intent.putExtra("selectImageIndex", i);
                     mContext.startActivity(intent);

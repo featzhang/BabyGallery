@@ -5,9 +5,6 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
-/**
- * Created by aaron on 16-1-8.
- */
 public class ImageTool {
     public static Drawable resizeImage(Bitmap bitmap, int w, int h) {
         if (bitmap == null) {
@@ -30,7 +27,6 @@ public class ImageTool {
         // matrix.postRotate(45);
         Bitmap resizedBitmap = Bitmap.createBitmap(BitmapOrg, 0, 0, width,
                 height, matrix, true);
-        bitmap = null;
         return new BitmapDrawable(resizedBitmap);
     }
 }

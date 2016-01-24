@@ -22,6 +22,7 @@
             android:label="@string/add_message"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".view.ShowImageDetailActivity" />
+        <activity android:name=".view.ShowMessageDetailActivity" />
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

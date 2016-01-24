@@ -20,55 +20,42 @@ import club.guadazi.babygallery.util.ConstantValues;
  */
 public class ImageManager {
     private static final String TAG = "ImageManager";
-    private static Map<String, List<OnFinishListener>> finishListerMap = new HashMap<String, List<OnFinishListener>>();
-    private final static int THUMB_MODE = 0;
-    private final static int IMAGE_MODE = 1;
+    private static Map<Integer, List<OnFinishListener>> finishListerMap = new HashMap<Integer, List<OnFinishListener>>();
 
     interface OnFinishListener {
         void onFinish();
     }
 
     public static void setThumbnail(Context context, int remoteImageId, ImageView imageView) {
-        setImageValue(context, remoteImageId, imageView, THUMB_MODE);
+        setImageValue(context, remoteImageId, imageView, 0);
     }
 
     public static void setImage(Context context, int remoteImageId, ImageView imageView) {
-        setImageValue(context, remoteImageId, imageView, IMAGE_MODE);
+        setImageValue(context, remoteImageId, imageView, 1);
     }
 
     private static void setImageValue(final Context context, final int remoteImageId, final ImageView imageView, final int mode) {
-        Log.i(TAG, "ImageManager.setImageValue remoteImageId=" + remoteImageId + "\t" + "mode=" + mode);
-        if (mode == THUMB_MODE) {
+        Log.i(TAG, "ImageManager.setImageValue remoteImageId=" + remoteImageId + "\t");
+        if (mode == 0) {
             Drawable thumbnailDrawable = ImageFileManager.getThumbnailDrawable(context, remoteImageId);
             if (thumbnailDrawable != null) {
                 imageView.setImageDrawable(thumbnailDrawable);
                 return;
             }
-        } else if (mode == IMAGE_MODE) {
-            Drawable imageDrawable = ImageFileManager.getImageDrawable(context, remoteImageId);
-            if (imageDrawable != null) {
-                imageView.setImageDrawable(imageDrawable);
-                return;
-            }
+        } else {
+//                    imageView.setImageDrawable(ImageFileManager.getThumbnailDrawable(context, remoteImageId));
         }
-        BackMissionManager.MissionState missionState = null;
-        if (mode == IMAGE_MODE) {
-            missionState = BackMissionManager.requestImage(remoteImageId);
-        } else if (mode == THUMB_MODE) {
-            missionState = BackMissionManager.requestThumbnail(remoteImageId);
-        }
+        BackMissionManager.MissionState missionState = BackMissionManager.requestImage(remoteImageId);
         OnFinishListener onFinishListener = new OnFinishListener() {
             @Override
             public void onFinish() {
-                Log.i(TAG, "ImageManager.OnFinishListener.OnFinish set image: remote image id=" + remoteImageId + "\tmode=" + mode);
-                if (mode == THUMB_MODE) {
+                Log.i(TAG, "ImageManager.OnFinishListener.OnFinish set image: remote image id=" + remoteImageId);
+                if (mode == 0) {
                     Drawable thumbnailDrawable = ImageFileManager.getThumbnailDrawable(context, remoteImageId);
                     Log.i(TAG, "thumbnailDrawable=" + thumbnailDrawable);
                     imageView.setImageDrawable(thumbnailDrawable);
-                } else if (mode == IMAGE_MODE) {
-                    Drawable imageDrawable = ImageFileManager.getImageDrawable(context, remoteImageId);
-                    Log.i(TAG, "imageDrawable=" + imageDrawable);
-                    imageView.setImageDrawable(imageDrawable);
+                } else {
+//                    imageView.setImageDrawable(ImageFileManager.getThumbnailDrawable(context, remoteImageId));
                 }
             }
         };
@@ -76,44 +63,34 @@ public class ImageManager {
             case NOT_BEGIN:
                 List<OnFinishListener> onFinishListeners = new ArrayList<OnFinishListener>();
                 onFinishListeners.add(onFinishListener);
-                finishListerMap.put(remoteImageId + "_" + mode, onFinishListeners);
-                if (mode == IMAGE_MODE) {
-                    BackMissionManager.setImageRequestState(remoteImageId, BackMissionManager.MissionState.WORKING);
-                } else if (mode == THUMB_MODE) {
-                    BackMissionManager.setThumbnailRequestState(remoteImageId, BackMissionManager.MissionState.WORKING);
-
-                }
+                finishListerMap.put(remoteImageId, onFinishListeners);
+                BackMissionManager.setImageRequestState(remoteImageId, BackMissionManager.MissionState.WORKING);
                 Log.i(TAG, "set state working: remoteImageId=" + remoteImageId);
 
                 new DownloadImageAsyncTask(context) {
 
                     @Override
                     public void onFinish(ImageEntity imageEntity) {
-                        if (mode == IMAGE_MODE)
-                            BackMissionManager.setImageRequestState(remoteImageId, BackMissionManager.MissionState.END);
-                        else if (mode == THUMB_MODE) {
-                            BackMissionManager.setThumbnailRequestState(remoteImageId, BackMissionManager.MissionState.END);
-
-                        }
+                        BackMissionManager.setImageRequestState(remoteImageId, BackMissionManager.MissionState.END);
                         Log.i(TAG, "set state working: remoteImageId=" + remoteImageId);
 
-                        List<OnFinishListener> onFinishListenersTHUMBNAIL_MODE = finishListerMap.get(remoteImageId + "_" + mode);
-                        if (onFinishListenersTHUMBNAIL_MODE != null) {
-                            for (OnFinishListener onFinishListener : onFinishListenersTHUMBNAIL_MODE) {
+                        List<OnFinishListener> onFinishListeners1 = finishListerMap.get(remoteImageId);
+                        if (onFinishListeners1 != null) {
+                            for (OnFinishListener onFinishListener : onFinishListeners1) {
                                 onFinishListener.onFinish();
                             }
                         }
                     }
 
-                }.execute(mode == IMAGE_MODE ? ConstantValues.REQUEST_IMAGE : ConstantValues.REQUEST_IMAGE_NIC, remoteImageId + "", ConstantValues.getUserId(context) + "");
+                }.execute(ConstantValues.REQUEST_IMAGE_NIC, remoteImageId + "", ConstantValues.getUserId(context) + "");
 
                 break;
             case WORKING:
-                List<OnFinishListener> onFinishListenersTHUMBNAIL_MODE = finishListerMap.get(remoteImageId);
-                onFinishListenersTHUMBNAIL_MODE.add(onFinishListener);
+                List<OnFinishListener> onFinishListeners1 = finishListerMap.get(remoteImageId);
+                onFinishListeners1.add(onFinishListener);
                 Log.i(TAG, "get state working: remoteImageId=" + remoteImageId + " add to onFinishListener");
 
-                finishListerMap.put(remoteImageId + "_" + mode, onFinishListenersTHUMBNAIL_MODE);
+                finishListerMap.put(remoteImageId, onFinishListeners1);
                 break;
             case END:
                 onFinishListener.onFinish();
